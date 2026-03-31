@@ -1,13 +1,17 @@
-import React from "react";
+import React, { useState } from "react";
 import "../components/Learn.css";
 import Navbar from "./Navbar";
 import { FaLeaf, FaShieldAlt, FaChartBar } from "react-icons/fa";
 import Footer from "./Footer";
 import Testimonials from "./Testimonials";
 import { useEffect } from "react";
+import AIChatbot from "./AIchatbot";
 
 
 function Learn() {
+  
+
+const [isChatOpen, setIsChatOpen] = useState(false);
   useEffect(() => {
   const elements = document.querySelectorAll(".animate");
 
@@ -28,7 +32,7 @@ function Learn() {
 }, []);
   return (
     <>
-      <Navbar />
+       <Navbar onAiHelpClick={() => setIsChatOpen(true)} />
 
       <div className="learn-page">
 
@@ -276,6 +280,10 @@ function Learn() {
 
       </div>
 <Testimonials />
+<AIChatbot
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+      />
       <Footer />
     </>
   );

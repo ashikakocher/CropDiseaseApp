@@ -5,12 +5,14 @@ import Navbar from "./Navbar";
 import Footer from "./Footer";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import AIChatbot from "./AIchatbot";
 
 function Dashboard() {
   const [image, setImage] = useState(null);
   const [preview, setPreview] = useState(null);
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
 
   // Handle Image Upload
   const handleImage = (file) => {
@@ -63,7 +65,7 @@ function Dashboard() {
 
   return (
     <>
-      <Navbar />
+       <Navbar onAiHelpClick={() => setIsChatOpen(true)} />
 
       <div className="dashboard-container">
         {/* TOP HERO */}
@@ -260,6 +262,10 @@ function Dashboard() {
           )}
         </div>
       </div>
+       <AIChatbot
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+      />
       <Footer />
     </>
   );

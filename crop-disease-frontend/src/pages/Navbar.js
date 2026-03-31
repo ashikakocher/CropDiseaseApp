@@ -9,7 +9,7 @@ import {
 } from "react-icons/fa";
 import "../components/Navbar.css";
 
-function Navbar() {
+function Navbar({ onAiHelpClick }) {
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -52,7 +52,6 @@ function Navbar() {
       </header>
 
       {/* BOTTOM NAV */}
-    
       <nav className="bottom-nav">
         <button
           className={isActive("/learn") ? "active" : ""}
@@ -60,6 +59,7 @@ function Navbar() {
         >
           Home
         </button>
+
         <button
           className={isActive("/dashboard") ? "active" : ""}
           onClick={() => navigate("/dashboard")}
@@ -74,23 +74,10 @@ function Navbar() {
           History
         </button>
 
+        
 
-        <button
-          className={isActive("/shops") ? "active" : ""}
-          onClick={() => navigate("/shops")}
-        >
-          Shops
-        </button>
-
-        <button
-          className={isActive("/reports") ? "active" : ""}
-          onClick={() => navigate("/reports")}
-        >
-          Reports
-        </button>
-
-        {/* Highlighted AI Button */}
-        <button className="ai-btn" onClick={() => navigate("/ai")}>
+        {/* AI BUTTON */}
+        <button className="ai-btn" onClick={onAiHelpClick}>
           <FaRobot /> AI Help
         </button>
       </nav>
