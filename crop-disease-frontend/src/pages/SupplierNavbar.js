@@ -1,32 +1,26 @@
-import React, { useState, useRef, useEffect } from "react";
+import {React,useState,useRef ,useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import {
+  FaUser,
   FaLeaf,
   FaUserCircle,
   FaSignOutAlt,
   FaSearch,
-  FaRobot,
-  FaUser,
-  FaChevronDown,
+  FaRobot
 } from "react-icons/fa";
 import "../components/Navbar.css";
 
 function Navbar({ onAiHelpClick }) {
-   const navigate = useNavigate();
+  const navigate = useNavigate();
   const location = useLocation();
-
-  const [showLearn, setShowLearn] = useState(false);
   const [showProfileMenu, setShowProfileMenu] = useState(false);
-
   const profileRef = useRef(null);
-
   const logout = () => {
-    localStorage.removeItem("token");
+    localStorage.removeItem("supplier_token");
     navigate("/");
   };
 
   const isActive = (path) => location.pathname === path;
-
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (profileRef.current && !profileRef.current.contains(event.target)) {
@@ -39,6 +33,7 @@ function Navbar({ onAiHelpClick }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
+
   return (
     <>
       {/* TOP STRIP */}
@@ -49,7 +44,7 @@ function Navbar({ onAiHelpClick }) {
       {/* MAIN NAVBAR */}
       <header className="navbar">
         {/* LOGO */}
-        <div className="navbar-logo" onClick={() => navigate("/dashboard")}>
+        <div className="navbar-logo" onClick={() => navigate("/supplier-dashboard")}>
           <FaLeaf className="logo-icon" />
           <h2>CropGuard</h2>
         </div>
@@ -57,10 +52,11 @@ function Navbar({ onAiHelpClick }) {
         {/* SEARCH */}
         <div className="navbar-search">
           <FaSearch />
-          <input placeholder="Search diseases, crops..." />
+          <input placeholder="Search shops,medicines..." />
         </div>
 
-         <div className="navbar-right" ref={profileRef}>
+      {/* RIGHT SIDE */}
+        <div className="navbar-right" ref={profileRef}>
           <div
             className="profile-dropdown-wrapper"
             onClick={() => setShowProfileMenu(!showProfileMenu)}
@@ -74,7 +70,7 @@ function Navbar({ onAiHelpClick }) {
                 <div
                   className="profile-dropdown-item"
                   onClick={() => {
-                    navigate("/profile");
+                    navigate("/supplier-profile");
                     setShowProfileMenu(false);
                   }}
                 >
@@ -100,51 +96,27 @@ function Navbar({ onAiHelpClick }) {
       {/* BOTTOM NAV */}
       <nav className="bottom-nav">
         <button
-          className={isActive("/learn") ? "active" : ""}
-          onClick={() => navigate("/learn")}
-        >
-          Home
-        </button>
-
-        <button
-          className={isActive("/dashboard") ? "active" : ""}
-          onClick={() => navigate("/dashboard")}
+          className={isActive("/supplier-dashboard") ? "active" : ""}
+          onClick={() => navigate("/supplier-dashboard")}
         >
           Dashboard
         </button>
 
         <button
-          className={isActive("/history") ? "active" : ""}
-          onClick={() => navigate("/history")}
+          className={isActive("/my-shops") ? "active" : ""}
+          onClick={() => navigate("/my-shops")}
         >
-          History
+          My Shops
         </button>
-        
-       <div
-  className="learn-wrapper"
-  onMouseEnter={() => setShowLearn(true)}
-  onMouseLeave={() => setShowLearn(false)}
->
-  <button
-    className={`nav-btn ${
-      isActive("/disease-library") ||
-      isActive("/video-library") ||
-      isActive("/crop-tips")
-        ? "active"
-        : ""
-    }`}
-  >
-    Learn <span className="dropdown-arrow">▾</span>
-  </button>
 
-  {showLearn && (
-    <div className="dropdown-menu">
-      <p onClick={() => navigate("/disease-library")}>📚 Disease Library</p>
-      <p onClick={() => navigate("/video-library")}>🎥 Video Library</p>
-      
-    </div>
-  )}
-</div>
+        <button
+          className={isActive("/add shops") ? "active" : ""}
+          onClick={() => navigate("/add-shop")}
+        >
+          Add shops
+        </button>
+
+        
 
         {/* AI BUTTON */}
         <button className="ai-btn" onClick={onAiHelpClick}>

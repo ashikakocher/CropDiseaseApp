@@ -10,7 +10,7 @@ import {
   FaSeedling,
   FaFlask,
 } from "react-icons/fa";
-
+import "./AdminDashboard.css";
 import {
   Chart as ChartJS,
   CategoryScale,

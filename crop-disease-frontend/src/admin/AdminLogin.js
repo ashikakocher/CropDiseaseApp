@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
-import "../components/Login.css";
+import "../components/AdminLogin.css";
 
 function AdminLogin() {
   const navigate = useNavigate();
@@ -36,48 +36,53 @@ function AdminLogin() {
   };
 
   return (
-    <div className="login-page">
-      <div className="login-bg"></div>
-      <div className="login-overlay"></div>
+  <div className="admin-login-page">
 
-      <div className="auth-center-wrap">
-        <div className="login-box">
-
-          <div className="form-top">
-            <h2>Admin Login</h2>
-            <p>Superuser access panel</p>
-          </div>
-
-          {message && (
-            <div className="form-message error">{message}</div>
-          )}
-
-          <div className="input-wrapper">
-            <input
-              type="email"
-              placeholder="Admin Email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
-
-          <div className="input-wrapper">
-            <input
-              type="password"
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-            />
-          </div>
-
-          <button className="auth-btn" onClick={handleLogin}>
-            Login as Admin
-          </button>
-
-        </div>
-      </div>
+    {/* LEFT SIDE */}
+    <div className="left-section">
+      <img
+        src="https://cdn-icons-png.flaticon.com/512/2909/2909763.png"
+        alt="crop"
+      />
+      <h2>AI Crop Disease Detection</h2>
+      <p>
+        Detect crop diseases early and take smart actions for better yield.
+      </p>
     </div>
-  );
+
+    {/* RIGHT SIDE */}
+    <div className="right-section">
+
+      <div className="login-card">
+        <h2>Admin Login</h2>
+        <p className="sub-text">Enter your credentials to continue</p>
+
+        {message && <div className="error">{message}</div>}
+
+        <input
+          type="email"
+          placeholder="Email Address"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+        />
+
+        <input
+          type="password"
+          placeholder="Password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+        />
+
+        <button onClick={handleLogin}>Login</button>
+
+        <p className="footer-text">
+          Secure admin access panel
+        </p>
+      </div>
+
+    </div>
+  </div>
+);
 }
 
 export default AdminLogin;

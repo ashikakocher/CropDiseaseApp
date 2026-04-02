@@ -2,7 +2,16 @@ import React, { useEffect, useState, useCallback } from "react";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 import "../components/MyShops.css";
-import { FaStore, FaMapMarkerAlt, FaEdit, FaEye, FaTrash } from "react-icons/fa";
+import {
+  FaStore,
+  FaMapMarkerAlt,
+  FaEdit,
+  FaEye,
+  FaTrash,
+  FaPlus,
+} from "react-icons/fa";
+import Navbar from "./SupplierNavbar";
+import Footer from "./Footer";
 
 function MyShops() {
   const navigate = useNavigate();
@@ -65,81 +74,111 @@ function MyShops() {
   };
 
   return (
-    <div className="my-shops-page">
-      <div className="my-shops-header">
-        <div>
-          <h1>My Shops</h1>
-          <p>View, edit, and manage all your added shops.</p>
-        </div>
+    <>
+      <Navbar />
 
-        <button className="add-shop-top-btn" onClick={() => navigate("/add-shop")}>
-          + Add New Shop
-        </button>
+      <div className="my-shops-page">
+        <div className="my-shops-container">
+          <div className="my-shops-hero">
+            <div className="my-shops-hero-left">
+              <span className="my-shops-badge">🏪 Supplier Shop Management</span>
+              <h1>My Shops</h1>
+              <p>View, edit, and manage all your added agro shops in one place.</p>
+            </div>
+
+            <button
+              className="add-shop-top-btn"
+              onClick={() => navigate("/add-shop")}
+            >
+              <FaPlus /> Add New Shop
+            </button>
+          </div>
+
+          {message && (
+            <div className={`my-shops-message ${messageType}`}>
+              {message}
+            </div>
+          )}
+
+          {loading ? (
+            <div className="my-shops-empty">
+              <FaStore className="empty-icon" />
+              <h2>Loading shops...</h2>
+              <p>Please wait while we fetch your shop details.</p>
+            </div>
+          ) : shops.length === 0 ? (
+            <div className="my-shops-empty">
+              <FaStore className="empty-icon" />
+              <h2>No shops added yet</h2>
+              <p>Start by adding your first shop and medicines.</p>
+              <button onClick={() => navigate("/add-shop")}>Add Shop</button>
+            </div>
+          ) : (
+            <div className="my-shops-grid">
+              {shops.map((shop) => (
+                <div key={shop.id} className="my-shop-card">
+                  <div className="my-shop-card-top">
+                    <div className="shop-icon-wrap">
+                      <FaStore className="shop-card-icon" />
+                    </div>
+
+                    <div className="shop-card-heading">
+                      <h2>{shop.shop_name}</h2>
+                      <p className="shop-location">
+                        <FaMapMarkerAlt className="shop-location-icon" />
+                        {shop.city}
+                        {shop.area ? `, ${shop.area}` : ""}
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="shop-card-body">
+                    <div className="shop-info-row">
+                      <span className="shop-info-label">Address</span>
+                      <p>{shop.address}</p>
+                    </div>
+
+                    <div className="shop-stats-row">
+                      <div className="shop-stat-box">
+                        <span className="shop-stat-number">
+                          {shop.total_medicines || 0}
+                        </span>
+                        <span className="shop-stat-label">Medicines</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="shop-card-actions">
+                    <button
+                      className="myshops-view-btn"
+                      onClick={() => navigate(`/shop/${shop.id}`)}
+                    >
+                      <FaEye /> View
+                    </button>
+
+                    <button
+                      className="myshops-edit-btn"
+                      onClick={() => navigate(`/shop/${shop.id}`)}
+                    >
+                      <FaEdit /> Edit
+                    </button>
+
+                    <button
+                      className="myshops-delete-btn"
+                      onClick={() => handleDeleteShop(shop.id)}
+                    >
+                      <FaTrash /> Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
       </div>
 
-      {message && (
-        <div className={`my-shops-message ${messageType}`}>
-          {message}
-        </div>
-      )}
-
-      {loading ? (
-        <div className="my-shops-empty">Loading shops...</div>
-      ) : shops.length === 0 ? (
-        <div className="my-shops-empty">
-          <FaStore className="empty-icon" />
-          <h2>No shops added yet</h2>
-          <p>Start by adding your first shop.</p>
-          <button onClick={() => navigate("/add-shop")}>Add Shop</button>
-        </div>
-      ) : (
-        <div className="my-shops-grid">
-          {shops.map((shop) => (
-            <div key={shop.id} className="my-shop-card">
-              <div className="my-shop-card-top">
-                <FaStore className="shop-card-icon" />
-                <div>
-                  <h2>{shop.shop_name}</h2>
-                  <p className="shop-location">
-                    <FaMapMarkerAlt className="shop-location-icon" />
-                    {shop.city}
-                    {shop.area ? `, ${shop.area}` : ""}
-                  </p>
-                </div>
-              </div>
-
-              <div className="shop-card-body">
-                <p><b>Address:</b> {shop.address}</p>
-                <p><b>Total Medicines:</b> {shop.total_medicines}</p>
-              </div>
-
-              <div className="shop-card-actions">
-                <button
-                  className="view-btn"
-                  onClick={() => navigate(`/shop/${shop.id}`)}
-                >
-                  <FaEye /> View
-                </button>
-
-                <button
-                  className="edit-btn"
-                  onClick={() => navigate(`/shop/${shop.id}`)}
-                >
-                  <FaEdit /> Edit
-                </button>
-
-                <button
-                  className="delete-btn"
-                  onClick={() => handleDeleteShop(shop.id)}
-                >
-                  <FaTrash /> Delete
-                </button>
-              </div>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
+      <Footer />
+    </>
   );
 }
 

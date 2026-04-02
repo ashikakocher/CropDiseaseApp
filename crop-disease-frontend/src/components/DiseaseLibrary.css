@@ -1,0 +1,390 @@
+.disease-library-page {
+  min-height: 100vh;
+  background: #edf8ef;
+  padding: 30px 24px 40px;
+  font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+.disease-library-hero {
+  max-width: 1200px;
+  margin: 0 auto 28px;
+  text-align: center;
+}
+
+.disease-library-hero h1 {
+  margin: 0 0 10px;
+  font-size: 48px;
+  font-weight: 800;
+  color: #166534;
+}
+
+.disease-library-hero p {
+  max-width: 780px;
+  margin: 0 auto 28px;
+  font-size: 18px;
+  line-height: 1.7;
+  color: #2f6c46;
+}
+
+.library-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  align-items: stretch;
+}
+
+.library-search-box {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: #ffffff;
+  border: 1px solid #d6e7d9;
+  border-radius: 16px;
+  padding: 16px 18px;
+  box-shadow: 0 4px 14px rgba(22, 101, 52, 0.04);
+}
+
+.library-search-box input {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 16px;
+  color: #1f2937;
+}
+
+.library-filter-box {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #2f6c46;
+  font-size: 18px;
+  font-weight: 500;
+}
+
+.library-filter-box select {
+  border: 1px solid #d6e7d9;
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 12px 14px;
+  font-size: 16px;
+  color: #374151;
+  outline: none;
+}
+
+.control-icon {
+  color: #7b8794;
+  font-size: 20px;
+}
+
+.library-main-card {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 360px 1fr;
+  background: #ffffff;
+  border: 1px solid #dcebdd;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 8px 30px rgba(22, 101, 52, 0.05);
+}
+
+.disease-list-panel,
+.disease-details-panel {
+  padding: 26px 24px;
+}
+
+.disease-list-panel {
+  border-right: 1px solid #e4efe5;
+  background: #ffffff;
+}
+
+.disease-list-panel h2,
+.disease-details-panel h2 {
+  margin: 0 0 22px;
+  font-size: 18px;
+  font-weight: 700;
+  color: #166534;
+}
+
+.disease-list-scroll {
+  max-height: 900px;
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+.disease-list-scroll::-webkit-scrollbar {
+  width: 7px;
+}
+
+.disease-list-scroll::-webkit-scrollbar-thumb {
+  background: #d5e7d8;
+  border-radius: 20px;
+}
+
+.disease-list-card {
+  border: 1px solid #e2ece3;
+  border-radius: 16px;
+  padding: 18px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  background: #ffffff;
+}
+
+.disease-list-card:hover {
+  border-color: #b7d7bd;
+  box-shadow: 0 8px 18px rgba(22, 101, 52, 0.06);
+  transform: translateY(-2px);
+}
+
+.disease-list-card.selected {
+  border-color: #92c5a0;
+  background: #f7fcf8;
+}
+
+.disease-list-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.disease-list-top h3 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 700;
+  color: #1f6b3d;
+}
+
+.disease-list-card p {
+  margin: 0 0 18px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #667085;
+}
+
+.disease-list-bottom {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.severity-label {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.severity-dots {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.severity-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #d1d5db;
+}
+
+.severity-dot.active {
+  background: #ef4444;
+}
+
+.category-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 7px 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.category-badge.fungal {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.category-badge.bacterial {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.category-badge.viral {
+  background: #fee2e2;
+  color: #dc2626;
+}
+
+.category-badge.nutritional {
+  background: #fef3c7;
+  color: #b45309;
+}
+
+.category-badge.pest-related {
+  background: #ede9fe;
+  color: #7c3aed;
+}
+
+.disease-details-panel {
+  background: #ffffff;
+}
+
+.details-header {
+  margin-bottom: 10px;
+}
+
+.details-header h3 {
+  margin: 0 0 12px;
+  font-size: 28px;
+  font-weight: 800;
+  color: #166534;
+}
+
+.details-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+}
+
+.details-severity {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #6b7280;
+  font-size: 15px;
+}
+
+.details-description {
+  margin: 24px 0;
+  font-size: 16px;
+  line-height: 1.8;
+  color: #334155;
+}
+
+.detail-section {
+  border: 1px solid #dcebdd;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  background: #ffffff;
+}
+
+.green-section {
+  background: #f3fbf4;
+}
+
+.section-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #eef8ef;
+  padding: 16px 18px;
+  color: #166534;
+}
+
+.section-title h4 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.detail-list,
+.numbered-list {
+  margin: 0;
+  padding: 18px 24px 20px 40px;
+}
+
+.detail-list li,
+.numbered-list li {
+  margin-bottom: 12px;
+  color: #374151;
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 18px;
+}
+
+.plant-tag {
+  background: #d8f3dc;
+  color: #2f6c46;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 9px 14px;
+  border-radius: 999px;
+}
+
+.empty-text,
+.panel-message {
+  color: #6b7280;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.panel-message {
+  padding: 12px 0;
+}
+
+@media (max-width: 1024px) {
+  .library-main-card {
+    grid-template-columns: 1fr;
+  }
+
+  .disease-list-panel {
+    border-right: none;
+    border-bottom: 1px solid #e4efe5;
+  }
+
+  .disease-list-scroll {
+    max-height: 420px;
+  }
+}
+
+@media (max-width: 768px) {
+  .disease-library-page {
+    padding: 20px 14px 30px;
+  }
+
+  .disease-library-hero h1 {
+    font-size: 32px;
+  }
+
+  .disease-library-hero p {
+    font-size: 15px;
+  }
+
+  .library-filter-box {
+    margin-left: 0;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    font-size: 16px;
+  }
+
+  .library-search-box {
+    padding: 14px 16px;
+  }
+
+  .disease-list-panel,
+  .disease-details-panel {
+    padding: 18px 16px;
+  }
+
+  .details-header h3 {
+    font-size: 24px;
+  }
+
+  .detail-list li,
+  .numbered-list li {
+    font-size: 15px;
+  }
+}

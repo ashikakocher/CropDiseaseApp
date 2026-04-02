@@ -8,6 +8,7 @@ import {
   FaLeaf,
   FaSignOutAlt,
   FaUserShield,
+  FaDiagnoses
 } from "react-icons/fa";
 import { FaUserMd, FaChartLine, FaComments } from "react-icons/fa";
 function AdminSidebar() {
@@ -53,6 +54,8 @@ function AdminSidebar() {
 <NavLink to="/admin/predictions" className="admin-link">
   <FaChartLine /> <span>Manage Predictions</span>
 </NavLink>
+<NavLink to="/admin/diseases" className="admin-link">
+<FaDiagnoses /><span>Manage Diseases</span></NavLink>
 
       </nav>
       

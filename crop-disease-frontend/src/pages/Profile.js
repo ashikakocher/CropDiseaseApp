@@ -101,28 +101,7 @@ function Profile() {
 
       <div className="profile-page">
         {/* HERO */}
-        <section className="profile-hero">
-          <div className="profile-hero-left">
-            <span className="profile-badge">🌿 Farmer Profile</span>
-            <h1>Manage Your CropGuard Profile</h1>
-            <p>
-              Keep your personal details and farm information updated so
-              CropGuard can serve you better.
-            </p>
-          </div>
-
-          <div className="profile-hero-right">
-            <div className="profile-summary-card">
-              <div className="profile-avatar">
-                <FaUserCircle />
-              </div>
-              <h3>{profile.name || "Farmer"}</h3>
-              <p>{profile.email || "No email available"}</p>
-              <span className="profile-role">CropGuard User</span>
-            </div>
-          </div>
-        </section>
-
+        
         {/* MAIN CONTENT */}
         <div className="profile-container">
           {/* BASIC INFO */}

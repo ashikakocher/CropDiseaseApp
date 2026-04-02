@@ -2,6 +2,21 @@ import React, { useState } from "react";
 import API from "../services/api";
 import { useNavigate } from "react-router-dom";
 import "../components/AddShop.css";
+import Navbar from "./SupplierNavbar";
+import Footer from "./Footer";
+import {
+  FaStore,
+  FaMapMarkerAlt,
+  FaCity,
+  FaPlus,
+  FaCapsules,
+  FaTrash,
+  FaArrowLeft,
+  FaSave,
+  FaMapPin,
+  FaMoneyBillWave,
+  FaClipboardList,
+} from "react-icons/fa";
 
 function AddShop() {
   const navigate = useNavigate();
@@ -12,7 +27,6 @@ function AddShop() {
   const [address, setAddress] = useState("");
   const [latitude, setLatitude] = useState("");
   const [longitude, setLongitude] = useState("");
-
   const [medicines, setMedicines] = useState([
     {
       medicine_name: "",
@@ -142,161 +156,245 @@ function AddShop() {
   };
 
   return (
-    <div className="add-shop-page">
-      <div className="add-shop-container">
-        <div className="add-shop-header">
-          <h1>Add Shop</h1>
-          <p>Register your shop and add available medicines.</p>
-        </div>
+    <>
+      <Navbar />
 
-        {message && (
-          <div className={`add-shop-message ${messageType}`}>
-            {message}
-          </div>
-        )}
+      <div className="add-shop-page">
+        <div className="add-shop-wrapper">
+          <div className="add-shop-hero">
+            <div className="add-shop-hero-left">
+              <span className="form-badge">🏪 Supplier Management</span>
+              <h1>Add Your Shop & Medicines</h1>
+              <p>
+                Register your agro medicine shop, manage inventory, and make your
+                medicines available for farmers nearby.
+              </p>
+            </div>
 
-        <form onSubmit={handleSubmit}>
-          <div className="add-shop-section">
-            <h2>Shop Details</h2>
-
-            <div className="add-shop-grid">
-              <input
-                type="text"
-                placeholder="Shop Name *"
-                value={shopName}
-                onChange={(e) => setShopName(e.target.value)}
-              />
-
-              <input
-                type="text"
-                placeholder="City *"
-                value={city}
-                onChange={(e) => setCity(e.target.value)}
-              />
-
-              <input
-                type="text"
-                placeholder="Area"
-                value={area}
-                onChange={(e) => setArea(e.target.value)}
-              />
-
-              <input
-                type="text"
-                placeholder="Full Address *"
-                value={address}
-                onChange={(e) => setAddress(e.target.value)}
-              />
-
-              <input
-                type="number"
-                step="any"
-                placeholder="Latitude"
-                value={latitude}
-                onChange={(e) => setLatitude(e.target.value)}
-              />
-
-              <input
-                type="number"
-                step="any"
-                placeholder="Longitude"
-                value={longitude}
-                onChange={(e) => setLongitude(e.target.value)}
-              />
+            <div className="add-shop-hero-card">
+              <div className="mini-stat-card">
+                <FaStore className="mini-stat-icon" />
+                <div>
+                  <h4>Shop Setup</h4>
+                  <p>Create your store profile</p>
+                </div>
+              </div>
+              <div className="mini-stat-card">
+                <FaCapsules className="mini-stat-icon" />
+                <div>
+                  <h4>Medicine Inventory</h4>
+                  <p>Add available medicines easily</p>
+                </div>
+              </div>
             </div>
           </div>
 
-          <div className="add-shop-section">
-            <div className="medicine-heading-row">
-              <h2>Available Medicines</h2>
-              <button
-                type="button"
-                className="add-medicine-btn"
-                onClick={addMedicineField}
-              >
-                + Add Medicine
-              </button>
-            </div>
+          <div className="add-shop-container">
+            {message && (
+              <div className={`add-shop-message ${messageType}`}>
+                {message}
+              </div>
+            )}
 
-            {medicines.map((medicine, index) => (
-              <div className="medicine-card" key={index}>
-                <div className="add-shop-grid">
-                  <input
-                    type="text"
-                    placeholder="Medicine Name *"
-                    value={medicine.medicine_name}
-                    onChange={(e) =>
-                      handleMedicineChange(index, "medicine_name", e.target.value)
-                    }
-                  />
-
-                  <input
-                    type="number"
-                    placeholder="Stock Quantity"
-                    value={medicine.stock_quantity}
-                    onChange={(e) =>
-                      handleMedicineChange(index, "stock_quantity", e.target.value)
-                    }
-                  />
-
-                  <input
-                    type="number"
-                    step="0.01"
-                    placeholder="Price"
-                    value={medicine.price}
-                    onChange={(e) =>
-                      handleMedicineChange(index, "price", e.target.value)
-                    }
-                  />
-
-                  <input
-  type="text"
-  placeholder="Disease"
-  value={medicine.treatment}
-  onChange={(e) =>
-    handleMedicineChange(index, "treatment", e.target.value)
-  }
-/>
-
-<input
-  type="text"
-  placeholder="Dosage"
-  value={medicine.dosage}
-  onChange={(e) =>
-    handleMedicineChange(index, "dosage", e.target.value)
-  }
-/>
+            <form onSubmit={handleSubmit}>
+              {/* SHOP DETAILS */}
+              <div className="add-shop-section">
+                <div className="section-title-row">
+                  <div>
+                    <span className="section-chip">SHOP DETAILS</span>
+                    <h2>Basic Shop Information</h2>
+                    <p>Fill in your shop details so farmers can find you easily.</p>
+                  </div>
                 </div>
 
-                {medicines.length > 1 && (
+                <div className="add-shop-grid">
+                  <div className="input-group">
+                    <label><FaStore /> Shop Name *</label>
+                    <input
+                      type="text"
+                      placeholder="Enter shop name"
+                      value={shopName}
+                      onChange={(e) => setShopName(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="input-group">
+                    <label><FaCity /> City *</label>
+                    <input
+                      type="text"
+                      placeholder="Enter city"
+                      value={city}
+                      onChange={(e) => setCity(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="input-group">
+                    <label><FaMapMarkerAlt /> Area</label>
+                    <input
+                      type="text"
+                      placeholder="Enter area"
+                      value={area}
+                      onChange={(e) => setArea(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="input-group full-width">
+                    <label><FaMapPin /> Full Address *</label>
+                    <input
+                      type="text"
+                      placeholder="Enter complete address"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="input-group">
+                    <label>Latitude</label>
+                    <input
+                      type="number"
+                      step="any"
+                      placeholder="e.g. 30.7333"
+                      value={latitude}
+                      onChange={(e) => setLatitude(e.target.value)}
+                    />
+                  </div>
+
+                  <div className="input-group">
+                    <label>Longitude</label>
+                    <input
+                      type="number"
+                      step="any"
+                      placeholder="e.g. 76.7794"
+                      value={longitude}
+                      onChange={(e) => setLongitude(e.target.value)}
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* MEDICINES */}
+              <div className="add-shop-section">
+                <div className="medicine-heading-row">
+                  <div>
+                    <span className="section-chip">MEDICINE INVENTORY</span>
+                    <h2>Available Medicines</h2>
+                    <p>Add one or more medicines available in your shop.</p>
+                  </div>
+
                   <button
                     type="button"
-                    className="remove-medicine-btn"
-                    onClick={() => removeMedicineField(index)}
+                    className="add-medicine-btn"
+                    onClick={addMedicineField}
                   >
-                    Remove
+                    <FaPlus /> Add Medicine
                   </button>
-                )}
+                </div>
+
+                {medicines.map((medicine, index) => (
+                  <div className="medicine-card" key={index}>
+                    <div className="medicine-card-top">
+                      <div className="medicine-number">
+                        <FaCapsules />
+                        <span>Medicine {index + 1}</span>
+                      </div>
+
+                      {medicines.length > 1 && (
+                        <button
+                          type="button"
+                          className="remove-medicine-btn"
+                          onClick={() => removeMedicineField(index)}
+                        >
+                          <FaTrash /> Remove
+                        </button>
+                      )}
+                    </div>
+
+                    <div className="add-shop-grid">
+                      <div className="input-group">
+                        <label><FaCapsules /> Medicine Name *</label>
+                        <input
+                          type="text"
+                          placeholder="Enter medicine name"
+                          value={medicine.medicine_name}
+                          onChange={(e) =>
+                            handleMedicineChange(index, "medicine_name", e.target.value)
+                          }
+                        />
+                      </div>
+
+                      <div className="input-group">
+                        <label><FaClipboardList /> Stock Quantity</label>
+                        <input
+                          type="number"
+                          placeholder="Enter stock quantity"
+                          value={medicine.stock_quantity}
+                          onChange={(e) =>
+                            handleMedicineChange(index, "stock_quantity", e.target.value)
+                          }
+                        />
+                      </div>
+
+                      <div className="input-group">
+                        <label><FaMoneyBillWave /> Price</label>
+                        <input
+                          type="number"
+                          step="0.01"
+                          placeholder="Enter price"
+                          value={medicine.price}
+                          onChange={(e) =>
+                            handleMedicineChange(index, "price", e.target.value)
+                          }
+                        />
+                      </div>
+
+                      <div className="input-group">
+                        <label>Disease / Treatment</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. Leaf Spot"
+                          value={medicine.treatment}
+                          onChange={(e) =>
+                            handleMedicineChange(index, "treatment", e.target.value)
+                          }
+                        />
+                      </div>
+
+                      <div className="input-group">
+                        <label>Dosage</label>
+                        <input
+                          type="text"
+                          placeholder="e.g. 2 ml per litre"
+                          value={medicine.dosage}
+                          onChange={(e) =>
+                            handleMedicineChange(index, "dosage", e.target.value)
+                          }
+                        />
+                      </div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
 
-          <div className="add-shop-actions">
-            <button
-              type="button"
-              className="back-btn"
-              onClick={() => navigate("/supplier-dashboard")}
-            >
-              Back
-            </button>
+              {/* ACTIONS */}
+              <div className="add-shop-actions">
+                <button
+                  type="button"
+                  className="back-btn"
+                  onClick={() => navigate("/supplier-dashboard")}
+                >
+                  <FaArrowLeft /> Back
+                </button>
 
-            <button type="submit" className="submit-btn">
-              Save Shop
-            </button>
+                <button type="submit" className="submit-btn">
+                  <FaSave /> Save Shop
+                </button>
+              </div>
+            </form>
           </div>
-        </form>
+        </div>
       </div>
-    </div>
+      <Footer />
+    </>
   );
 }
 

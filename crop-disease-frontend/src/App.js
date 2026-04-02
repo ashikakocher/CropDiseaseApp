@@ -13,16 +13,18 @@ import SupplierDashboard from "./pages/SupplierDashboard";
 import AddShop from "./pages/AddShop";
 import MyShops from "./pages/MyShops";
 import ShopDetails from "./pages/ShopDetails";
-
+import DiseaseLibrary from "./pages/DiseaseLibrary";
 import AdminLogin from "./admin/AdminLogin";
 import AdminDashboard from "./admin/AdminDashboard";
 import AdminLayout from "./admin/AdminLayout";
 import ManageUsers from "./admin/ManageUsers";
 import ManageShops from "./admin/ManageShops";
+import ManageDiseases from "./admin/ManageDiseases";
 import ManageMedicines from "./admin/ManageMedicines";
 import ManageSuppliers from "./admin/ManageSuppliers";
 import ManagePredictions from "./admin/ManagePredictions";
-
+import SupplierProfile from "./pages/SupplierProfile";
+import VideoLibrary from "./pages/VideoLibrary";
 function App() {
   const [supplierToken, setSupplierToken] = useState(null);
 
@@ -61,6 +63,14 @@ function App() {
           path="/history"
           element={token ? <History /> : <Navigate to="/login" />}
         />
+         <Route
+          path="/disease-library"
+          element={token ? <DiseaseLibrary /> : <Navigate to="/login" />}
+        />
+         <Route
+          path="/video-library"
+          element={token ? <VideoLibrary /> : <Navigate to="/login" />}
+        />
         <Route
           path="/profile"
           element={token ? <Profile /> : <Navigate to="/login" />}
@@ -93,6 +103,7 @@ function App() {
           path="/shop/:id"
           element={supplierToken ? <ShopDetails /> : <Navigate to="/supplier-login" />}
         />
+        <Route path="/supplier-profile" element={<SupplierProfile />} />
 
         {/* Admin Protected Layout */}
         <Route
@@ -104,7 +115,10 @@ function App() {
           <Route path="shops" element={<ManageShops />} />
           <Route path="medicines" element={<ManageMedicines />} />
           <Route path="suppliers" element={<ManageSuppliers />} />
-<Route path="predictions" element={<ManagePredictions />} />
+<Route path="predictions" element={<ManagePredictions />} 
+
+/>
+<Route path="/admin/diseases" element={<ManageDiseases />} />
         </Route>
       </Routes>
     </BrowserRouter>

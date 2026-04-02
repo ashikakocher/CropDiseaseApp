@@ -159,107 +159,140 @@ function Dashboard() {
 
           
           {/* RESULT */}
-          {result && (
-            <div className="ai-result-container">
-              <h2 className="ai-result-title">🌿 AI Diagnosis Result</h2>
+{/* RIGHT SIDE */}
+<div>
+  {!result ? (
+    /* DEFAULT CONTENT */
+<div className="info-card">
+  <div className="info-grid">
 
-              <div className="ai-result-grid">
-                {/* Confidence */}
-                <div className="ai-card confidence-card">
-                  <h3>Model Confidence</h3>
+    {/* LEFT SIDE */}
+    <div>
+      <h2>🌿 How It Works</h2>
 
-                  <div className="circle-wrapper">
-                    <CircularProgressbar
-                      value={result.confidence}
-                      text={`${result.confidence}%`}
-                      styles={buildStyles({
-                        textSize: "18px",
-                        pathColor: "#4caf50",
-                        textColor: "#2e7d32",
-                        trailColor: "#e0e0e0"
-                      })}
-                    />
-                  </div>
-                </div>
-
-                {/* Disease */}
-                <div className="ai-card disease-card">
-                  <h3>Disease Detected</h3>
-
-                  <div className="disease-icon">🌿</div>
-
-                  <h2>{result.disease}</h2>
-
-                  <p><b>Crop:</b> {result.crop}</p>
-
-                  <p className={`severity ${result.severity?.toLowerCase()}`}>
-                    Severity: {result.severity}
-                  </p>
-                </div>
-
-              
-                {/* Treatment */}
-                <div className="ai-card treatment-card">
-                  <h3>Recommended Treatments</h3>
-
-                  {result.treatments && result.treatments.length > 0 ? (
-                    <div className="treatment-list">
-                      {result.treatments.map((item, index) => (
-                        <div key={index} className="treatment-item">
-                          <p>
-                            <b>Medicine:</b> {item.medicine_name}
-                          </p>
-                          <p>
-                            <b>Dosage:</b> {item.dosage || "Not available"}
-                          </p>
-                          {index !== result.treatments.length - 1 && <hr />}
-                        </div>
-                      ))}
-                    </div>
-                  ) : (
-                    <p>No treatment found for this disease.</p>
-                  )}
-                </div>
-
-                {/* Shops */}
-                <div className="ai-card shops-card">
-  <h3>Available Shops in Your Area</h3>
-
-  {result.shops && result.shops.length > 0 ? (
-    <div className="shops-list">
-      {result.shops.map((shop, index) => (
-        <div key={index} className="shop-item">
-          <p><b>{shop.shop_name}</b></p>
-          <p>{shop.address}</p>
-          <p>
-            {shop.city}
-            {shop.area ? `, ${shop.area}` : ""}
-          </p>
-
-          <div className="shop-medicines">
-            <p><b>Available Medicines:</b></p>
-
-            {shop.medicines.map((med, medIndex) => (
-  <div key={medIndex} className="shop-medicine-row">
-    <p><b>Medicine:</b> {med.medicine_name}</p>
-    <p><b>Price:</b> ₹{med.price ?? "N/A"}</p>
-    <p><b>Stock:</b> {med.stock_quantity ?? "N/A"}</p>
-    <p><b>Dosage:</b> {med.dosage || "Not available"}</p>
-  </div>
-))}
-          </div>
-
-          {index !== result.shops.length - 1 && <hr />}
+      <div className="info-steps">
+        <div className="step">
+          <span>1</span>
+          <p>Upload a clear image of your crop</p>
         </div>
-      ))}
+
+        <div className="step">
+          <span>2</span>
+          <p>AI analyzes the disease instantly</p>
+        </div>
+
+        <div className="step">
+          <span>3</span>
+          <p>Get treatments & nearby medicine shops</p>
+        </div>
+      </div>
     </div>
+
+    {/* RIGHT SIDE */}
+    <div className="info-tips">
+      <h2>💡 Tips for Better Results</h2>
+
+      <ul>
+        <li>Use clear, well-lit images</li>
+        <li>Focus on affected area</li>
+        <li>Avoid blurry photos</li>
+      </ul>
+    </div>
+
+  </div>
+</div>
   ) : (
-    <p>No matching shops found in your city/area.</p>
+    /* RESULT SECTION */
+    <div className="ai-result-container">
+      <h2 className="ai-result-title">🌿 AI Diagnosis Result</h2>
+
+      <div className="ai-result-grid">
+        {/* Confidence */}
+        <div className="ai-card confidence-card">
+          <h3>Model Confidence</h3>
+
+          <div className="circle-wrapper">
+            <CircularProgressbar
+              value={result.confidence}
+              text={`${result.confidence}%`}
+              styles={buildStyles({
+                textSize: "18px",
+                pathColor: "#4caf50",
+                textColor: "#2e7d32",
+                trailColor: "#e0e0e0"
+              })}
+            />
+          </div>
+        </div>
+
+        {/* Disease */}
+        <div className="ai-card disease-card">
+          <h3>Disease Detected</h3>
+
+          <div className="disease-icon">🌿</div>
+
+          <h2>{result.disease}</h2>
+
+          <p><b>Crop:</b> {result.crop}</p>
+
+          <p className={`severity ${result.severity?.toLowerCase()}`}>
+            Severity: {result.severity}
+          </p>
+        </div>
+
+        {/* Treatment */}
+        <div className="ai-card treatment-card">
+          <h3>Recommended Treatments</h3>
+
+          {result.treatments?.length > 0 ? (
+            result.treatments.map((item, index) => (
+              <div key={index} className="treatment-item">
+                <p><b>Medicine:</b> {item.medicine_name}</p>
+                <p><b>Dosage:</b> {item.dosage || "Not available"}</p>
+                {index !== result.treatments.length - 1 && <hr />}
+              </div>
+            ))
+          ) : (
+            <p>No treatment found for this disease.</p>
+          )}
+        </div>
+
+        {/* Shops */}
+        <div className="ai-card shops-card">
+          <h3>Available Shops in Your Area</h3>
+
+          {result.shops?.length > 0 ? (
+            result.shops.map((shop, index) => (
+              <div key={index} className="shop-item">
+                <p><b>{shop.shop_name}</b></p>
+                <p>{shop.address}</p>
+                <p>
+                  {shop.city}
+                  {shop.area ? `, ${shop.area}` : ""}
+                </p>
+
+                <div className="shop-medicines">
+                  <p><b>Available Medicines:</b></p>
+
+                  {shop.medicines.map((med, i) => (
+                    <div key={i} className="shop-medicine-row">
+                      <p>{med.medicine_name}</p>
+                      <p>₹{med.price ?? "N/A"}</p>
+                    </div>
+                  ))}
+                </div>
+
+                {index !== result.shops.length - 1 && <hr />}
+              </div>
+            ))
+          ) : (
+            <p>No matching shops found.</p>
+          )}
+        </div>
+      </div>
+    </div>
   )}
 </div>
-              </div>
-            </div>
-          )}
         </div>
       </div>
        <AIChatbot

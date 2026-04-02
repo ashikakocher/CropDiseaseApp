@@ -1,174 +1,345 @@
 .my-shops-page {
   min-height: 100vh;
-  background: #f4f7fb;
-  padding: 30px;
-  font-family: Arial, sans-serif;
+  background: linear-gradient(180deg, #eef8f1 0%, #f8fcf9 100%);
+  padding: 35px 20px 50px;
+  font-family: "Inter", "Segoe UI", sans-serif;
 }
 
-.my-shops-header {
+.my-shops-container {
+  max-width: 1250px;
+  margin: 0 auto;
+}
+
+.my-shops-hero {
+  background: linear-gradient(135deg, #dff3e4 0%, #edf8ef 100%);
+  border: 1px solid #d7eadb;
+  border-radius: 28px;
+  padding: 30px 32px;
+  margin-bottom: 28px;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 25px;
-  gap: 15px;
+  gap: 20px;
   flex-wrap: wrap;
+  box-shadow: 0 8px 24px rgba(45, 106, 79, 0.06);
 }
 
-.my-shops-header h1 {
-  font-size: 32px;
-  color: #1f2937;
-  margin-bottom: 8px;
+.my-shops-hero-left h1 {
+  font-size: 40px;
+  font-weight: 800;
+  color: #184d35;
+  margin: 10px 0 8px;
 }
 
-.my-shops-header p {
-  color: #6b7280;
-  font-size: 15px;
+.my-shops-hero-left p {
+  font-size: 16px;
+  color: #4b6b5c;
+  margin: 0;
+  line-height: 1.6;
 }
 
-.add-shop-top-btn {
+.my-shops-badge {
+  display: inline-block;
   background: #16a34a;
-  color: #fff;
-  border: none;
-  padding: 12px 18px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 15px;
+  color: white;
+  padding: 9px 16px;
+  border-radius: 999px;
+  font-size: 14px;
   font-weight: 600;
 }
 
+.add-shop-top-btn {
+  background: #2d6a4f;
+  color: #fff;
+  border: none;
+  padding: 14px 22px;
+  border-radius: 14px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 8px 18px rgba(45, 106, 79, 0.18);
+  transition: all 0.25s ease;
+}
+
 .add-shop-top-btn:hover {
-  background: #15803d;
+  background: #1f513b;
+  transform: translateY(-2px);
 }
 
 .my-shops-message {
-  padding: 12px 16px;
-  border-radius: 10px;
+  padding: 14px 18px;
+  border-radius: 14px;
   margin-bottom: 20px;
-  font-weight: 500;
+  font-weight: 600;
+  border: 1px solid transparent;
 }
 
 .my-shops-message.success {
   background: #dcfce7;
   color: #166534;
+  border-color: #b7e4c7;
 }
 
 .my-shops-message.error {
   background: #fee2e2;
   color: #991b1b;
+  border-color: #fecaca;
 }
 
 .my-shops-empty {
-  background: white;
-  border-radius: 18px;
-  padding: 50px 20px;
+  background: #ffffff;
+  border: 1px solid #e2efe5;
+  border-radius: 24px;
+  padding: 60px 24px;
   text-align: center;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  box-shadow: 0 12px 30px rgba(45, 106, 79, 0.06);
 }
 
 .empty-icon {
-  font-size: 50px;
-  color: #16a34a;
-  margin-bottom: 15px;
+  font-size: 54px;
+  color: #2d6a4f;
+  margin-bottom: 16px;
 }
 
 .my-shops-empty h2 {
   margin-bottom: 10px;
   color: #1f2937;
+  font-size: 28px;
 }
 
 .my-shops-empty p {
   color: #6b7280;
-  margin-bottom: 18px;
+  margin-bottom: 20px;
+  font-size: 15px;
 }
 
 .my-shops-empty button {
-  background: #16a34a;
+  background: #2d6a4f;
   color: white;
   border: none;
-  padding: 12px 18px;
-  border-radius: 10px;
+  padding: 13px 20px;
+  border-radius: 12px;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
+  font-size: 15px;
+}
+
+.my-shops-empty button:hover {
+  background: #1f513b;
 }
 
 .my-shops-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 20px;
+  grid-template-columns: repeat(auto-fit, minmax(330px, 1fr));
+  gap: 22px;
 }
 
 .my-shop-card {
-  background: white;
-  border-radius: 18px;
-  padding: 22px;
-  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+  background: #ffffff;
+  border: 1px solid #e2efe5;
+  border-radius: 24px;
+  padding: 24px;
+  box-shadow: 0 10px 24px rgba(45, 106, 79, 0.06);
+  transition: all 0.28s ease;
+}
+
+.my-shop-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 18px 32px rgba(45, 106, 79, 0.1);
 }
 
 .my-shop-card-top {
   display: flex;
   align-items: flex-start;
-  gap: 15px;
-  margin-bottom: 18px;
+  gap: 16px;
+  margin-bottom: 20px;
+}
+
+.shop-icon-wrap {
+  width: 54px;
+  height: 54px;
+  border-radius: 16px;
+  background: #eaf7ee;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
 }
 
 .shop-card-icon {
-  font-size: 30px;
-  color: #16a34a;
-  margin-top: 4px;
+  font-size: 26px;
+  color: #2d6a4f;
 }
 
-.my-shop-card h2 {
-  font-size: 22px;
+.shop-card-heading h2 {
+  font-size: 24px;
   color: #111827;
-  margin-bottom: 6px;
+  margin: 0 0 8px;
+  font-weight: 800;
 }
 
 .shop-location {
-  color: #6b7280;
+  color: #5f6f64;
   display: flex;
   align-items: center;
   gap: 8px;
+  margin: 0;
+  font-size: 15px;
 }
 
 .shop-location-icon {
-  color: #16a34a;
+  color: #2d6a4f;
 }
 
-.shop-card-body p {
+.shop-card-body {
+  margin-bottom: 20px;
+}
+
+.shop-info-row {
+  background: #f7fbf8;
+  border: 1px solid #ebf3ed;
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-bottom: 16px;
+}
+
+.shop-info-label {
+  display: block;
+  font-size: 13px;
+  font-weight: 700;
+  color: #2d6a4f;
+  margin-bottom: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.shop-info-row p {
   color: #374151;
-  margin-bottom: 10px;
-  line-height: 1.5;
+  margin: 0;
+  line-height: 1.6;
+  font-size: 15px;
 }
 
+.shop-stats-row {
+  display: flex;
+}
+
+.shop-stat-box {
+  min-width: 120px;
+  background: #edf8ef;
+  border: 1px solid #d8ecd9;
+  border-radius: 16px;
+  padding: 14px 18px;
+  text-align: center;
+}
+
+.shop-stat-number {
+  display: block;
+  font-size: 24px;
+  font-weight: 800;
+  color: #184d35;
+  line-height: 1;
+  margin-bottom: 6px;
+}
+
+.shop-stat-label {
+  font-size: 13px;
+  color: #5f6f64;
+  font-weight: 600;
+}
 .shop-card-actions {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   flex-wrap: wrap;
-  margin-top: 18px;
+  margin-top: 12px;
 }
 
 .shop-card-actions button {
   border: none;
-  padding: 10px 14px;
-  border-radius: 10px;
+  padding: 12px 16px;
+  border-radius: 12px;
   cursor: pointer;
-  font-weight: 600;
-  display: flex;
+  font-weight: 700;
+  font-size: 14px;
+
+  display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 8px;
+
+  min-height: 44px;
+  line-height: 1;
+  transition: 0.25s ease;
 }
 
-.view-btn {
+.shop-card-actions button svg {
+  font-size: 15px;
+  flex-shrink: 0;
+  display: block;
+}
+
+.shop-card-actions button span {
+  display: inline-block;
+  line-height: 1;
+}
+
+.myshops-view-btn {
+  background: #e0f2fe;
+  color: #0369a1;
+}
+
+.myshops-view-btn:hover {
+  background: #bae6fd;
+}
+
+.myshops-edit-btn {
   background: #dbeafe;
   color: #1d4ed8;
 }
 
-.edit-btn {
-  background: #fef3c7;
-  color: #b45309;
+.myshops-edit-btn:hover {
+  background: #bfdbfe;
 }
 
-.delete-btn {
+.myshops-delete-btn {
   background: #fee2e2;
-  color: #b91c1c;
+  color: #dc2626;
+}
+
+.myshops-delete-btn:hover {
+  background: #fecaca;
+}
+@media (max-width: 768px) {
+  .my-shops-page {
+    padding: 22px 14px 36px;
+  }
+
+  .my-shops-hero {
+    padding: 24px 20px;
+    border-radius: 22px;
+  }
+
+  .my-shops-hero-left h1 {
+    font-size: 30px;
+  }
+
+  .my-shop-card {
+    padding: 20px;
+  }
+
+  .shop-card-heading h2 {
+    font-size: 20px;
+  }
+
+  .shop-card-actions {
+    flex-direction: column;
+  }
+
+  .shop-card-actions button {
+    width: 100%;
+    justify-content: center;
+  }
 }

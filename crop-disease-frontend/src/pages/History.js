@@ -3,6 +3,8 @@ import API from "../services/api";
 import "../components/History.css";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
+import AIChatbot from "./AIchatbot";
+
 import {
   FaSearch,
   FaLeaf,
@@ -17,7 +19,7 @@ function History() {
   const [predictions, setPredictions] = useState([]);
   const [search, setSearch] = useState("");
   const [selectedPrediction, setSelectedPrediction] = useState(null);
-
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const fetchHistory = async () => {
     const token = localStorage.getItem("token");
 
@@ -68,7 +70,7 @@ function History() {
 
   return (
     <>
-      <Navbar />
+       <Navbar onAiHelpClick={() => setIsChatOpen(true)} />
 
       <div className="history-page">
         <section className="history-hero">
@@ -328,6 +330,10 @@ function History() {
       )}
 
       <Footer />
+      <AIChatbot
+        isOpen={isChatOpen}
+        onClose={() => setIsChatOpen(false)}
+      />
     </>
   );
 }
