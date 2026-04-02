@@ -1,5 +1,7 @@
 from pydantic import BaseModel, EmailStr, Field
 from typing import Optional, List
+from datetime import datetime
+
 
 
 # ---------- User Schemas ----------
@@ -362,3 +364,41 @@ class AdminShopUpdate(BaseModel):
     address: str
     latitude: Optional[float] = None
     longitude: Optional[float] = None
+
+
+class DiseaseBase(BaseModel):
+    name: str
+    category: str
+    severity: int
+    short_description: Optional[str] = None
+    full_description: Optional[str] = None
+    symptoms: Optional[List[str]] = []
+    causes: Optional[List[str]] = []
+    treatments: Optional[List[str]] = []
+    affected_plants: Optional[List[str]] = []
+    prevention: Optional[List[str]] = []
+    image_url: Optional[str] = None
+
+class DiseaseCreate(DiseaseBase):
+    pass
+
+class DiseaseUpdate(BaseModel):
+    name: Optional[str] = None
+    category: Optional[str] = None
+    severity: Optional[int] = None
+    short_description: Optional[str] = None
+    full_description: Optional[str] = None
+    symptoms: Optional[List[str]] = None
+    causes: Optional[List[str]] = None
+    treatments: Optional[List[str]] = None
+    affected_plants: Optional[List[str]] = None
+    prevention: Optional[List[str]] = None
+    image_url: Optional[str] = None
+
+class DiseaseResponse(DiseaseBase):
+    id: int
+    created_at: datetime
+    updated_at: datetime
+
+    class Config:
+        from_attributes = True

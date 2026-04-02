@@ -5,7 +5,7 @@ from fastapi.staticfiles import StaticFiles
 
 from app.database import engine
 from app import models
-from app.routers import prediction, users, treatment, shops, suppliers, supplier_medicines, admin ,chatbot
+from app.routers import prediction, users, treatment, shops, suppliers, supplier_medicines, admin ,chatbot ,diseases
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -30,6 +30,7 @@ app.include_router(suppliers.router)
 app.include_router(supplier_medicines.router)
 app.include_router(admin.router)
 app.include_router(chatbot.router)
+app.include_router(diseases.router)
 
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_BACKEND_DIR = os.path.dirname(BASE_DIR)

@@ -2,6 +2,8 @@ from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Tex
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database import Base
+from sqlalchemy.sql import func
+
 
 
 class User(Base):
@@ -138,3 +140,28 @@ class Admin(Base):
     email = Column(String, unique=True, index=True, nullable=False)
     password_hash = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+
+
+
+
+class Disease(Base):
+    __tablename__ = "diseases"
+
+    id = Column(Integer, primary_key=True, index=True)
+    name = Column(String, nullable=False, unique=True)
+    category = Column(String, nullable=False)   # fungal, bacterial, viral etc.
+    severity = Column(Integer, nullable=False, default=1)
+
+    short_description = Column(Text, nullable=True)
+    full_description = Column(Text, nullable=True)
+
+    symptoms = Column(Text, nullable=True)         # store JSON string
+    causes = Column(Text, nullable=True)           # store JSON string
+    treatments = Column(Text, nullable=True)       # store JSON string
+    affected_plants = Column(Text, nullable=True)  # store JSON string
+    prevention = Column(Text, nullable=True)       # store JSON string
+
+    image_url = Column(String, nullable=True)
+
+    created_at = Column(DateTime(timezone=True), server_default=func.now())
+    updated_at = Column(DateTime(timezone=True), server_default=func.now(), onupdate=func.now())
