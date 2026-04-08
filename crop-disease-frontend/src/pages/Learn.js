@@ -247,7 +247,7 @@ const [isChatOpen, setIsChatOpen] = useState(false);
 
       {/* BUTTON */}
       <div className="library-btn">
-        <button>📖 Explore Disease Library →</button>
+        <a href="/disease-library"><button>📖 Explore Disease Library →</button></a>
         <p>Free access to our comprehensive plant disease reference</p>
       </div>
 

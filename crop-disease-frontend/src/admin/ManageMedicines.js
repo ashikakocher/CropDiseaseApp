@@ -1,15 +1,21 @@
 import React, { useEffect, useState } from "react";
 import API from "../services/api";
-import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
-
+import {
+  FaTrash,
+  FaEdit,
+  FaPlus,
+  FaCapsules,
+  FaClinicMedical,
+} from "react-icons/fa";
+import "./Admin.css";
 
 function ManageMedicines() {
-  const [medicines, setMedicines] = useState([]);
-  const [shops, setShops] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [editingMedicineId, setEditingMedicineId] = useState(null);
+  const [ammedMedicines, setAmmedMedicines] = useState([]);
+  const [ammedShops, setAmmedShops] = useState([]);
+  const [ammedShowModal, setAmmedShowModal] = useState(false);
+  const [ammedEditingMedicineId, setAmmedEditingMedicineId] = useState(null);
 
-  const [formData, setFormData] = useState({
+  const [ammedFormData, setAmmedFormData] = useState({
     medicine_name: "",
     stock_quantity: "",
     price: "",
@@ -19,39 +25,39 @@ function ManageMedicines() {
   });
 
   useEffect(() => {
-    fetchMedicines();
-    fetchShops();
+    ammedFetchMedicines();
+    ammedFetchShops();
   }, []);
 
-  const getHeaders = () => ({
+  const ammedGetHeaders = () => ({
     Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
   });
 
-  const fetchMedicines = async () => {
+  const ammedFetchMedicines = async () => {
     try {
       const res = await API.get("/admin/medicines", {
-        headers: getHeaders(),
+        headers: ammedGetHeaders(),
       });
-      setMedicines(res.data);
+      setAmmedMedicines(res.data || []);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const fetchShops = async () => {
+  const ammedFetchShops = async () => {
     try {
       const res = await API.get("/admin/shops", {
-        headers: getHeaders(),
+        headers: ammedGetHeaders(),
       });
-      setShops(res.data);
+      setAmmedShops(res.data || []);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const openAddModal = () => {
-    setEditingMedicineId(null);
-    setFormData({
+  const ammedOpenAddModal = () => {
+    setAmmedEditingMedicineId(null);
+    setAmmedFormData({
       medicine_name: "",
       stock_quantity: "",
       price: "",
@@ -59,12 +65,12 @@ function ManageMedicines() {
       dosage: "",
       shop_id: "",
     });
-    setShowModal(true);
+    setAmmedShowModal(true);
   };
 
-  const openEditModal = (item) => {
-    setEditingMedicineId(item.id);
-    setFormData({
+  const ammedOpenEditModal = (item) => {
+    setAmmedEditingMedicineId(item.id);
+    setAmmedFormData({
       medicine_name: item.medicine_name || "",
       stock_quantity: item.stock_quantity ?? "",
       price: item.price ?? "",
@@ -72,13 +78,13 @@ function ManageMedicines() {
       dosage: item.dosage || "",
       shop_id: item.shop_id || "",
     });
-    setShowModal(true);
+    setAmmedShowModal(true);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-    setEditingMedicineId(null);
-    setFormData({
+  const ammedCloseModal = () => {
+    setAmmedShowModal(false);
+    setAmmedEditingMedicineId(null);
+    setAmmedFormData({
       medicine_name: "",
       stock_quantity: "",
       price: "",
@@ -88,197 +94,290 @@ function ManageMedicines() {
     });
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Delete this medicine?")) return;
+  const ammedHandleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this medicine?")) return;
 
     try {
       await API.delete(`/admin/medicines/${id}`, {
-        headers: getHeaders(),
+        headers: ammedGetHeaders(),
       });
-      fetchMedicines();
+      ammedFetchMedicines();
     } catch (err) {
       console.log(err);
       alert(err.response?.data?.detail || "Delete failed");
     }
   };
 
-  const handleSubmit = async (e) => {
+  const ammedHandleSubmit = async (e) => {
     e.preventDefault();
 
     const payload = {
-      medicine_name: formData.medicine_name,
-      stock_quantity: formData.stock_quantity
-        ? Number(formData.stock_quantity)
+      medicine_name: ammedFormData.medicine_name,
+      stock_quantity: ammedFormData.stock_quantity
+        ? Number(ammedFormData.stock_quantity)
         : null,
-      price: formData.price ? Number(formData.price) : null,
-      treatment: formData.treatment || null,
-      dosage: formData.dosage || null,
-      shop_id: Number(formData.shop_id),
+      price: ammedFormData.price ? Number(ammedFormData.price) : null,
+      treatment: ammedFormData.treatment || null,
+      dosage: ammedFormData.dosage || null,
+      shop_id: Number(ammedFormData.shop_id),
     };
 
     try {
-      if (editingMedicineId) {
-        await API.put(`/admin/medicines/${editingMedicineId}`, payload, {
-          headers: getHeaders(),
+      if (ammedEditingMedicineId) {
+        await API.put(`/admin/medicines/${ammedEditingMedicineId}`, payload, {
+          headers: ammedGetHeaders(),
         });
       } else {
         await API.post("/admin/medicines", payload, {
-          headers: getHeaders(),
+          headers: ammedGetHeaders(),
         });
       }
 
-      closeModal();
-      fetchMedicines();
+      ammedCloseModal();
+      ammedFetchMedicines();
     } catch (err) {
       console.log(err);
       alert(err.response?.data?.detail || "Something went wrong");
     }
   };
 
-  const getShopName = (shopId) => {
-    const shop = shops.find((s) => s.id === shopId);
+  const ammedGetShopName = (shopId) => {
+    const shop = ammedShops.find((s) => s.id === shopId);
     return shop ? shop.shop_name : "N/A";
   };
 
   return (
-    <div className="admin-section">
-      <div className="section-header section-header-flex">
-        <h3>Manage Medicines</h3>
+    <section className="ammed-wrapper" id="ammed-wrapper">
+      <div className="ammed-header-card">
+        <div className="ammed-header-left">
+          <div className="ammed-header-icon">
+            <FaCapsules />
+          </div>
+          <div>
+            <h2 className="ammed-main-title">Manage Medicines</h2>
+          </div>
+        </div>
 
-        <button className="primary-admin-btn" onClick={openAddModal}>
-          <FaPlus style={{ marginRight: "8px" }} />
-          Add Medicine
+        <button
+          className="ammed-add-btn"
+          id="ammed-add-btn"
+          onClick={ammedOpenAddModal}
+        >
+          <FaPlus />
+          <span>Add Medicine</span>
         </button>
       </div>
 
-      <div className="table-wrap">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Medicine Name</th>
-              <th>Stock</th>
-              <th>Price</th>
-              <th>Treatment</th>
-              <th>Dosage</th>
-              <th>Shop Name</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {medicines.map((item) => (
-              <tr key={item.id}>
-                <td>{item.medicine_name}</td>
-                <td>{item.stock_quantity}</td>
-                <td>{item.price}</td>
-                <td>{item.treatment}</td>
-                <td>{item.dosage}</td>
-                <td>{getShopName(item.shop_id)}</td>
-                <td className="action-cell">
-                  <button
-                    className="icon-btn edit"
-                    onClick={() => openEditModal(item)}
-                  >
-                    <FaEdit />
-                  </button>
-
-                  <button
-                    className="icon-btn delete"
-                    onClick={() => handleDelete(item.id)}
-                  >
-                    <FaTrash />
-                  </button>
-                </td>
+      <div className="ammed-table-card">
+        <div className="ammed-table-responsive">
+          <table className="ammed-table" id="ammed-table">
+            <thead>
+              <tr>
+                <th>Medicine Name</th>
+                <th>Stock</th>
+                <th>Price</th>
+                <th>Treatment</th>
+                <th>Dosage</th>
+                <th>Shop Name</th>
+                <th className="ammed-action-heading">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {ammedMedicines.length > 0 ? (
+                ammedMedicines.map((item) => (
+                  <tr key={item.id}>
+                    <td>
+                      <div className="ammed-medicine-name">
+                        {item.medicine_name || "-"}
+                      </div>
+                    </td>
+                    <td>{item.stock_quantity ?? "-"}</td>
+                    <td>{item.price ?? "-"}</td>
+                    <td>{item.treatment || "-"}</td>
+                    <td>{item.dosage || "-"}</td>
+                    <td>{ammedGetShopName(item.shop_id)}</td>
+                    <td>
+                      <div className="ammed-action-group">
+                        <button
+                          className="ammed-icon-btn ammed-edit-btn"
+                          id={`ammed-edit-btn-${item.id}`}
+                          onClick={() => ammedOpenEditModal(item)}
+                          title="Edit Medicine"
+                        >
+                          <FaEdit />
+                        </button>
+
+                        <button
+                          className="ammed-icon-btn ammed-delete-btn"
+                          id={`ammed-delete-btn-${item.id}`}
+                          onClick={() => ammedHandleDelete(item.id)}
+                          title="Delete Medicine"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="7">
+                    <div className="ammed-empty-state">No medicines found.</div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {showModal && (
-        <div className="admin-modal-overlay">
-          <div className="admin-modal">
-            <div className="admin-modal-header">
-              <h3>{editingMedicineId ? "Edit Medicine" : "Add Medicine"}</h3>
-              <button className="modal-close-btn" onClick={closeModal}>
+      {ammedShowModal && (
+        <div className="ammed-modal-overlay" id="ammed-modal-overlay">
+          <div className="ammed-modal-box" id="ammed-modal-box">
+            <div className="ammed-modal-header">
+              <div>
+                <h3 className="ammed-modal-title">
+                  {ammedEditingMedicineId ? "Edit Medicine" : "Add New Medicine"}
+                </h3>
+                <p className="ammed-modal-subtitle">
+                  {ammedEditingMedicineId
+                    ? "Update medicine details below."
+                    : "Fill in the details to create a new medicine."}
+                </p>
+              </div>
+
+              <button
+                className="ammed-modal-close-btn"
+                id="ammed-modal-close-btn"
+                onClick={ammedCloseModal}
+                type="button"
+              >
                 ×
               </button>
             </div>
 
-            <form onSubmit={handleSubmit}>
-              <div className="admin-form-grid">
-                <input
-                  type="text"
-                  placeholder="Medicine Name"
-                  value={formData.medicine_name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, medicine_name: e.target.value })
-                  }
-                  required
-                />
+            <form className="ammed-form" onSubmit={ammedHandleSubmit}>
+              <div className="ammed-form-grid">
+                <div className="ammed-form-field">
+                  <label htmlFor="ammed-medicine-name">Medicine Name</label>
+                  <input
+                    id="ammed-medicine-name"
+                    type="text"
+                    placeholder="Enter medicine name"
+                    value={ammedFormData.medicine_name}
+                    onChange={(e) =>
+                      setAmmedFormData({
+                        ...ammedFormData,
+                        medicine_name: e.target.value,
+                      })
+                    }
+                    required
+                  />
+                </div>
 
-                <input
-                  type="number"
-                  placeholder="Stock Quantity"
-                  value={formData.stock_quantity}
-                  onChange={(e) =>
-                    setFormData({ ...formData, stock_quantity: e.target.value })
-                  }
-                />
+                <div className="ammed-form-field">
+                  <label htmlFor="ammed-stock">Stock Quantity</label>
+                  <input
+                    id="ammed-stock"
+                    type="number"
+                    placeholder="Enter stock quantity"
+                    value={ammedFormData.stock_quantity}
+                    onChange={(e) =>
+                      setAmmedFormData({
+                        ...ammedFormData,
+                        stock_quantity: e.target.value,
+                      })
+                    }
+                  />
+                </div>
 
-                <input
-                  type="number"
-                  step="0.01"
-                  placeholder="Price"
-                  value={formData.price}
-                  onChange={(e) =>
-                    setFormData({ ...formData, price: e.target.value })
-                  }
-                />
+                <div className="ammed-form-field">
+                  <label htmlFor="ammed-price">Price</label>
+                  <input
+                    id="ammed-price"
+                    type="number"
+                    step="0.01"
+                    placeholder="Enter price"
+                    value={ammedFormData.price}
+                    onChange={(e) =>
+                      setAmmedFormData({
+                        ...ammedFormData,
+                        price: e.target.value,
+                      })
+                    }
+                  />
+                </div>
 
-                <input
-                  type="text"
-                  placeholder="Disease"
-                  value={formData.treatment}
-                  onChange={(e) =>
-                    setFormData({ ...formData, treatment: e.target.value })
-                  }
-                />
+                <div className="ammed-form-field">
+                  <label htmlFor="ammed-treatment">Disease / Treatment</label>
+                  <input
+                    id="ammed-treatment"
+                    type="text"
+                    placeholder="Enter disease or treatment"
+                    value={ammedFormData.treatment}
+                    onChange={(e) =>
+                      setAmmedFormData({
+                        ...ammedFormData,
+                        treatment: e.target.value,
+                      })
+                    }
+                  />
+                </div>
 
-                <input
-                  type="text"
-                  placeholder="Dosage"
-                  value={formData.dosage}
-                  onChange={(e) =>
-                    setFormData({ ...formData, dosage: e.target.value })
-                  }
-                />
+                <div className="ammed-form-field">
+                  <label htmlFor="ammed-dosage">Dosage</label>
+                  <input
+                    id="ammed-dosage"
+                    type="text"
+                    placeholder="Enter dosage"
+                    value={ammedFormData.dosage}
+                    onChange={(e) =>
+                      setAmmedFormData({
+                        ...ammedFormData,
+                        dosage: e.target.value,
+                      })
+                    }
+                  />
+                </div>
 
-                <select
-                  value={formData.shop_id}
-                  onChange={(e) =>
-                    setFormData({ ...formData, shop_id: e.target.value })
-                  }
-                  required
-                >
-                  <option value="">Select Shop</option>
-                  {shops.map((shop) => (
-                    <option key={shop.id} value={shop.id}>
-                      {shop.shop_name}
-                    </option>
-                  ))}
-                </select>
+                <div className="ammed-form-field">
+                  <label htmlFor="ammed-shop">Shop</label>
+                  <select
+                    id="ammed-shop"
+                    value={ammedFormData.shop_id}
+                    onChange={(e) =>
+                      setAmmedFormData({
+                        ...ammedFormData,
+                        shop_id: e.target.value,
+                      })
+                    }
+                    required
+                  >
+                    <option value="">Select Shop</option>
+                    {ammedShops.map((shop) => (
+                      <option key={shop.id} value={shop.id}>
+                        {shop.shop_name}
+                      </option>
+                    ))}
+                  </select>
+                </div>
               </div>
 
-              <div className="modal-actions">
-                <button type="submit" className="save-btn">
-                  {editingMedicineId ? "Update Medicine" : "Add Medicine"}
+              <div className="ammed-modal-actions">
+                <button
+                  type="submit"
+                  className="ammed-primary-btn"
+                  id="ammed-primary-btn"
+                >
+                  {ammedEditingMedicineId ? "Update Medicine" : "Create Medicine"}
                 </button>
 
                 <button
                   type="button"
-                  className="cancel-btn"
-                  onClick={closeModal}
+                  className="ammed-secondary-btn"
+                  id="ammed-secondary-btn"
+                  onClick={ammedCloseModal}
                 >
                   Cancel
                 </button>
@@ -287,7 +386,7 @@ function ManageMedicines() {
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 }
 

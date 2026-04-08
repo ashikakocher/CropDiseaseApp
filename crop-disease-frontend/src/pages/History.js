@@ -183,14 +183,14 @@ function History() {
                     </p>
 
                     <button
-                      className="delete-btn"
+                      className="history-delete-btn"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleDelete(item.id);
                       }}
                     >
                       <FaTrashAlt />
-                      Delete
+                      
                     </button>
                   </div>
                 </div>

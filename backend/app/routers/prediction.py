@@ -187,7 +187,98 @@ def get_my_predictions(
         .filter(models.Prediction.owner_id == current_user.id)\
         .all()
 
-    return predictions
+    result = []
+
+    for pred in predictions:
+        disease = pred.disease
+
+        # -------------------------------
+        # ✅ TREATMENT LOGIC
+        # -------------------------------
+        words = disease.lower().split()
+
+        query = db.query(models.ShopMedicine)
+
+        for word in words:
+            query = query.filter(
+                models.ShopMedicine.treatment.ilike(f"%{word}%")
+            )
+
+        shop_medicines = query.all()
+
+        treatment_info = []
+        seen = set()
+
+        for med in shop_medicines:
+            key = med.medicine_name.strip().lower()
+
+            if key not in seen:
+                treatment_info.append({
+                    "medicine_name": med.medicine_name,
+                    "dosage": med.dosage,
+                    "description": med.treatment
+                })
+                seen.add(key)
+
+        # -------------------------------
+        # ✅ SHOP LOGIC (same as before)
+        # -------------------------------
+        recommended_medicines = [m.medicine_name for m in shop_medicines]
+
+        query = (
+            db.query(models.Shop, models.ShopMedicine)
+            .join(models.ShopMedicine, models.Shop.id == models.ShopMedicine.shop_id)
+        )
+
+        if recommended_medicines:
+            query = query.filter(
+                models.ShopMedicine.medicine_name.in_(recommended_medicines)
+            )
+        else:
+            query = query.filter(
+                models.ShopMedicine.treatment.ilike(f"%{disease}%")
+            )
+
+        available_shops = query.all()
+
+        grouped_shops = {}
+
+        for shop, medicine in available_shops:
+            key = f"{shop.shop_name}|{shop.address}|{shop.city}"
+
+            if key not in grouped_shops:
+                grouped_shops[key] = {
+                    "shop_name": shop.shop_name,
+                    "city": shop.city,
+                    "area": shop.area,
+                    "address": shop.address,
+                    "medicines": []
+                }
+
+            grouped_shops[key]["medicines"].append({
+                "medicine_name": medicine.medicine_name,
+                "price": medicine.price,
+                "stock_quantity": medicine.stock_quantity,
+                "dosage": medicine.dosage
+            })
+
+        # -------------------------------
+        # ✅ FINAL RESPONSE
+        # -------------------------------
+        result.append({
+            "id": pred.id,
+            "crop": pred.crop,
+            "disease": pred.disease,
+            "confidence": pred.confidence,
+            "severity": pred.severity,
+            "image_path": pred.image_path,
+            "created_at": pred.created_at,
+
+            "treatments": treatment_info,   # ✅ ADD THIS
+            "shops": list(grouped_shops.values())
+        })
+
+    return result
 
 
 # -------------------------------------------------

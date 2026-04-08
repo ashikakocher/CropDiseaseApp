@@ -49,15 +49,21 @@
 
 /* LINKS */
 .footer-section ul {
+  color:white;
   list-style: none;
   padding: 0;
 }
 
 .footer-section ul li {
+  color:white;
   margin-bottom: 8px;
   cursor: pointer;
   transition: 0.3s;
 }
+.footer-section ul li a {
+    text-decoration: none; /* remove underline */
+    color: white;          /* change color */
+  }
 
 .footer-section ul li:hover {
   color: #b7e4c7;

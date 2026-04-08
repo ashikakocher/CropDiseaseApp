@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../services/api";
-import { FaPlus, FaEdit, FaTrash, FaTimes } from "react-icons/fa";
+import { FaPlus, FaEdit, FaTrash, FaTimes ,FaLeaf } from "react-icons/fa";
 import "./Admin.css";
 
 function ManageDiseases() {
@@ -156,14 +156,24 @@ function ManageDiseases() {
 
   return (
     <div className="manage-diseases-page">
-      <div className="manage-diseases-card">
-        <div className="manage-diseases-header">
-          <h2>Manage Diseases</h2>
-          <button className="add-disease-btn" onClick={openAddModal}>
-            <FaPlus /> Add Disease
-          </button>
-        </div>
+        <div className="manage-diseases-header-card">
+  <div className="manage-diseases-header-left">
+    <div className="manage-diseases-header-icon">
+      <FaLeaf />
+    </div>
+    <div>
+      <h2 className="manage-diseases-main-title">Manage Diseases</h2>
+     
+    </div>
+  </div>
+ 
 
+  <button className="add-disease-btn" onClick={openAddModal}>
+    <FaPlus />
+    <span>Add Disease</span>
+  </button>
+</div>
+ <div className="manage-diseases-card">
         {loading ? (
           <p className="disease-status-text">Loading diseases...</p>
         ) : diseases.length === 0 ? (

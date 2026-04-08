@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import API from "../services/api";
-import { FaTrash, FaEdit, FaPlus } from "react-icons/fa";
+import { FaTrash, FaEdit, FaPlus, FaUserShield } from "react-icons/fa";
+import "./Admin.css";
 
 function ManageUsers() {
   const [users, setUsers] = useState([]);
-  const [showModal, setShowModal] = useState(false);
-  const [editingUserId, setEditingUserId] = useState(null);
+  const [amusrShowModal, setAmusrShowModal] = useState(false);
+  const [amusrEditingUserId, setAmusrEditingUserId] = useState(null);
 
-  const [formData, setFormData] = useState({
+  const [amusrFormData, setAmusrFormData] = useState({
     name: "",
     email: "",
     phone: "",
@@ -17,27 +18,27 @@ function ManageUsers() {
   });
 
   useEffect(() => {
-    fetchUsers();
+    amusrFetchUsers();
   }, []);
 
-  const getHeaders = () => ({
+  const amusrGetHeaders = () => ({
     Authorization: `Bearer ${localStorage.getItem("admin_token")}`,
   });
 
-  const fetchUsers = async () => {
+  const amusrFetchUsers = async () => {
     try {
       const res = await API.get("/admin/users", {
-        headers: getHeaders(),
+        headers: amusrGetHeaders(),
       });
-      setUsers(res.data);
+      setUsers(res.data || []);
     } catch (err) {
       console.log(err);
     }
   };
 
-  const openAddModal = () => {
-    setEditingUserId(null);
-    setFormData({
+  const amusrOpenAddModal = () => {
+    setAmusrEditingUserId(null);
+    setAmusrFormData({
       name: "",
       email: "",
       phone: "",
@@ -45,12 +46,12 @@ function ManageUsers() {
       area: "",
       password: "",
     });
-    setShowModal(true);
+    setAmusrShowModal(true);
   };
 
-  const openEditModal = (user) => {
-    setEditingUserId(user.id);
-    setFormData({
+  const amusrOpenEditModal = (user) => {
+    setAmusrEditingUserId(user.id);
+    setAmusrFormData({
       name: user.name || "",
       email: user.email || "",
       phone: user.phone || "",
@@ -58,13 +59,13 @@ function ManageUsers() {
       area: user.area || "",
       password: "",
     });
-    setShowModal(true);
+    setAmusrShowModal(true);
   };
 
-  const closeModal = () => {
-    setShowModal(false);
-    setEditingUserId(null);
-    setFormData({
+  const amusrCloseModal = () => {
+    setAmusrShowModal(false);
+    setAmusrEditingUserId(null);
+    setAmusrFormData({
       name: "",
       email: "",
       phone: "",
@@ -74,35 +75,35 @@ function ManageUsers() {
     });
   };
 
-  const handleDelete = async (id) => {
-    if (!window.confirm("Delete this user?")) return;
+  const amusrHandleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this user?")) return;
 
     try {
       await API.delete(`/admin/users/${id}`, {
-        headers: getHeaders(),
+        headers: amusrGetHeaders(),
       });
-      fetchUsers();
+      amusrFetchUsers();
     } catch (err) {
       console.log(err);
     }
   };
 
-  const handleSubmit = async (e) => {
+  const amusrHandleSubmit = async (e) => {
     e.preventDefault();
 
     try {
-      if (editingUserId) {
-        await API.put(`/admin/users/${editingUserId}`, formData, {
-          headers: getHeaders(),
+      if (amusrEditingUserId) {
+        await API.put(`/admin/users/${amusrEditingUserId}`, amusrFormData, {
+          headers: amusrGetHeaders(),
         });
       } else {
-        await API.post("/admin/users", formData, {
-          headers: getHeaders(),
+        await API.post("/admin/users", amusrFormData, {
+          headers: amusrGetHeaders(),
         });
       }
 
-      closeModal();
-      fetchUsers();
+      amusrCloseModal();
+      amusrFetchUsers();
     } catch (err) {
       console.log(err);
       alert(err.response?.data?.detail || "Something went wrong");
@@ -110,140 +111,234 @@ function ManageUsers() {
   };
 
   return (
-    <div className="admin-section">
-      <div className="section-header section-header-flex">
-        <h3>Manage Users</h3>
+    <section className="amusr-wrapper" id="amusr-wrapper">
+      <div className="amusr-header-card">
+        <div className="amusr-header-left">
+          <div className="amusr-header-icon">
+            <FaUserShield />
+          </div>
+          <div>
+            <h2 className="amusr-main-title">Manage Users</h2>
+            
+          </div>
+        </div>
 
-        <button className="primary-admin-btn" onClick={openAddModal}>
-          <FaPlus style={{ marginRight: "8px" }} />
-          Add User
+        <button
+          className="amusr-add-user-btn"
+          id="amusr-add-user-btn"
+          onClick={amusrOpenAddModal}
+        >
+          <FaPlus />
+          <span>Add User</span>
         </button>
       </div>
+      
 
-      <div className="table-wrap">
-        <table className="admin-table">
-          <thead>
-            <tr>
-              <th>Name</th>
-              <th>Email</th>
-              <th>Phone</th>
-              <th>City</th>
-              <th>Area</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-
-          <tbody>
-            {users.map((user) => (
-              <tr key={user.id}>
-                <td>{user.name}</td>
-                <td>{user.email}</td>
-                <td>{user.phone}</td>
-                <td>{user.city}</td>
-                <td>{user.area}</td>
-
-                <td className="action-cell">
-                  <button
-                    className="icon-btn edit"
-                    onClick={() => openEditModal(user)}
-                  >
-                    <FaEdit />
-                  </button>
-
-                  <button
-                    className="icon-btn delete"
-                    onClick={() => handleDelete(user.id)}
-                  >
-                    <FaTrash />
-                  </button>
-                </td>
+      <div className="amusr-table-card">
+        <div className="amusr-table-responsive">
+          <table className="amusr-table" id="amusr-table">
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>City</th>
+                <th>Area</th>
+                <th className="amusr-action-heading">Actions</th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+
+            <tbody>
+              {users.length > 0 ? (
+                users.map((user) => (
+                  <tr key={user.id}>
+                    <td>
+                      <div className="amusr-user-name">{user.name || "-"}</div>
+                    </td>
+                    <td>{user.email || "-"}</td>
+                    <td>{user.phone || "-"}</td>
+                    <td>{user.city || "-"}</td>
+                    <td>{user.area || "-"}</td>
+                    <td>
+                      <div className="amusr-action-group">
+                        <button
+                          className="amusr-icon-btn amusr-edit-btn"
+                          id={`amusr-edit-btn-${user.id}`}
+                          onClick={() => amusrOpenEditModal(user)}
+                          title="Edit User"
+                        >
+                          <FaEdit />
+                        </button>
+
+                        <button
+                          className="amusr-icon-btn amusr-delete-btn"
+                          id={`amusr-delete-btn-${user.id}`}
+                          onClick={() => amusrHandleDelete(user.id)}
+                          title="Delete User"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td colSpan="6">
+                    <div className="amusr-empty-state">
+                      No users found.
+                    </div>
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
+        </div>
       </div>
 
-      {showModal && (
-        <div className="admin-modal-overlay">
-          <div className="admin-modal">
-            <div className="admin-modal-header">
-              <h3>{editingUserId ? "Edit User" : "Add User"}</h3>
-              <button className="modal-close-btn" onClick={closeModal}>
+      {amusrShowModal && (
+        <div className="amusr-modal-overlay" id="amusr-modal-overlay">
+          <div className="amusr-modal-box" id="amusr-modal-box">
+            <div className="amusr-modal-header">
+              <div>
+                <h3 className="amusr-modal-title">
+                  {amusrEditingUserId ? "Edit User" : "Add New User"}
+                </h3>
+                <p className="amusr-modal-subtitle">
+                  {amusrEditingUserId
+                    ? "Update user details below."
+                    : "Fill in the details to create a new user."}
+                </p>
+              </div>
+
+              <button
+                className="amusr-modal-close-btn"
+                id="amusr-modal-close-btn"
+                onClick={amusrCloseModal}
+                type="button"
+              >
                 ×
               </button>
             </div>
 
-            <form onSubmit={handleSubmit}>
-              <div className="admin-form-grid">
-                <input
-                  type="text"
-                  placeholder="Name"
-                  value={formData.name}
-                  onChange={(e) =>
-                    setFormData({ ...formData, name: e.target.value })
-                  }
-                  required
-                />
-
-                <input
-                  type="email"
-                  placeholder="Email"
-                  value={formData.email}
-                  onChange={(e) =>
-                    setFormData({ ...formData, email: e.target.value })
-                  }
-                  required
-                />
-
-                <input
-                  type="text"
-                  placeholder="Phone"
-                  value={formData.phone}
-                  onChange={(e) =>
-                    setFormData({ ...formData, phone: e.target.value })
-                  }
-                />
-
-                <input
-                  type="text"
-                  placeholder="City"
-                  value={formData.city}
-                  onChange={(e) =>
-                    setFormData({ ...formData, city: e.target.value })
-                  }
-                />
-
-                <input
-                  type="text"
-                  placeholder="Area"
-                  value={formData.area}
-                  onChange={(e) =>
-                    setFormData({ ...formData, area: e.target.value })
-                  }
-                />
-
-                {!editingUserId && (
+            <form className="amusr-form" onSubmit={amusrHandleSubmit}>
+              <div className="amusr-form-grid">
+                <div className="amusr-form-field">
+                  <label htmlFor="amusr-name">Full Name</label>
                   <input
-                    type="password"
-                    placeholder="Password"
-                    value={formData.password}
+                    id="amusr-name"
+                    type="text"
+                    placeholder="Enter full name"
+                    value={amusrFormData.name}
                     onChange={(e) =>
-                      setFormData({ ...formData, password: e.target.value })
+                      setAmusrFormData({
+                        ...amusrFormData,
+                        name: e.target.value,
+                      })
                     }
                     required
                   />
+                </div>
+
+                <div className="amusr-form-field">
+                  <label htmlFor="amusr-email">Email Address</label>
+                  <input
+                    id="amusr-email"
+                    type="email"
+                    placeholder="Enter email"
+                    value={amusrFormData.email}
+                    onChange={(e) =>
+                      setAmusrFormData({
+                        ...amusrFormData,
+                        email: e.target.value,
+                      })
+                    }
+                    required
+                  />
+                </div>
+
+                <div className="amusr-form-field">
+                  <label htmlFor="amusr-phone">Phone Number</label>
+                  <input
+                    id="amusr-phone"
+                    type="text"
+                    placeholder="Enter phone number"
+                    value={amusrFormData.phone}
+                    onChange={(e) =>
+                      setAmusrFormData({
+                        ...amusrFormData,
+                        phone: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="amusr-form-field">
+                  <label htmlFor="amusr-city">City</label>
+                  <input
+                    id="amusr-city"
+                    type="text"
+                    placeholder="Enter city"
+                    value={amusrFormData.city}
+                    onChange={(e) =>
+                      setAmusrFormData({
+                        ...amusrFormData,
+                        city: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                <div className="amusr-form-field">
+                  <label htmlFor="amusr-area">Area</label>
+                  <input
+                    id="amusr-area"
+                    type="text"
+                    placeholder="Enter area"
+                    value={amusrFormData.area}
+                    onChange={(e) =>
+                      setAmusrFormData({
+                        ...amusrFormData,
+                        area: e.target.value,
+                      })
+                    }
+                  />
+                </div>
+
+                {!amusrEditingUserId && (
+                  <div className="amusr-form-field">
+                    <label htmlFor="amusr-password">Password</label>
+                    <input
+                      id="amusr-password"
+                      type="password"
+                      placeholder="Enter password"
+                      value={amusrFormData.password}
+                      onChange={(e) =>
+                        setAmusrFormData({
+                          ...amusrFormData,
+                          password: e.target.value,
+                        })
+                      }
+                      required
+                    />
+                  </div>
                 )}
               </div>
 
-              <div className="modal-actions">
-                <button type="submit" className="save-btn">
-                  {editingUserId ? "Update User" : "Add User"}
+              <div className="amusr-modal-actions">
+                <button
+                  type="submit"
+                  className="amusr-primary-btn"
+                  id="amusr-primary-btn"
+                >
+                  {amusrEditingUserId ? "Update User" : "Create User"}
                 </button>
 
                 <button
                   type="button"
-                  className="cancel-btn"
-                  onClick={closeModal}
+                  className="amusr-secondary-btn"
+                  id="amusr-secondary-btn"
+                  onClick={amusrCloseModal}
                 >
                   Cancel
                 </button>
@@ -252,7 +347,7 @@ function ManageUsers() {
           </div>
         </div>
       )}
-    </div>
+    </section>
   );
 }
 
