@@ -11,6 +11,7 @@ import {
   FaEnvelope,
   FaStore,
 } from "react-icons/fa";
+import Footer from "./Footer";
 
 function SupplierProfile() {
   const supplierToken = localStorage.getItem("supplier_token");
@@ -230,6 +231,7 @@ function SupplierProfile() {
           </div>
         </div>
       </div>
+      <Footer />
     </>
   );
 }

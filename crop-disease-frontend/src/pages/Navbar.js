@@ -10,6 +10,7 @@ import {
   FaChevronDown,
 } from "react-icons/fa";
 import "../components/Navbar.css";
+import GoogleTranslate from "./GoogleTranslate";
 
 function Navbar({ onAiHelpClick }) {
    const navigate = useNavigate();
@@ -61,6 +62,8 @@ function Navbar({ onAiHelpClick }) {
         </div>
 
          <div className="navbar-right" ref={profileRef}>
+           {/* 🌍 GOOGLE TRANSLATE DROPDOWN */}
+  <GoogleTranslate />
           <div
             className="profile-dropdown-wrapper"
             onClick={() => setShowProfileMenu(!showProfileMenu)}
@@ -120,28 +123,28 @@ function Navbar({ onAiHelpClick }) {
           History
         </button>
         
-       <div
-  className="learn-wrapper"
+      <div
+  className={`learn-wrapper ${
+    isActive("/disease-library") ||
+    isActive("/video-library") 
+      ? "active"
+      : ""
+  }`}
   onMouseEnter={() => setShowLearn(true)}
   onMouseLeave={() => setShowLearn(false)}
 >
-  <button
-    className={`nav-btn ${
-      isActive("/disease-library") ||
-      isActive("/video-library") ||
-      isActive("/crop-tips")
-        ? "active"
-        : ""
-    }`}
-  >
+  <button className="nav-btn">
     Learn <span className="dropdown-arrow">▾</span>
   </button>
 
   {showLearn && (
     <div className="dropdown-menu">
-      <p onClick={() => navigate("/disease-library")}>📚 Disease Library</p>
-      <p onClick={() => navigate("/video-library")}>🎥 Video Library</p>
-      
+      <p onClick={() => navigate("/disease-library")}>
+        📚 Disease Library
+      </p>
+      <p onClick={() => navigate("/video-library")}>
+        🎥 Video Library
+      </p>
     </div>
   )}
 </div>

@@ -9,6 +9,7 @@ import {
   FaRobot
 } from "react-icons/fa";
 import "../components/Navbar.css";
+import GoogleTranslate from "./GoogleTranslate";
 
 function Navbar({ onAiHelpClick }) {
   const navigate = useNavigate();
@@ -57,6 +58,8 @@ function Navbar({ onAiHelpClick }) {
 
       {/* RIGHT SIDE */}
         <div className="navbar-right" ref={profileRef}>
+          {/* 🌍 GOOGLE TRANSLATE DROPDOWN */}
+  <GoogleTranslate />
           <div
             className="profile-dropdown-wrapper"
             onClick={() => setShowProfileMenu(!showProfileMenu)}
