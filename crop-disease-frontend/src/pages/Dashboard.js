@@ -6,6 +6,9 @@ import Footer from "./Footer";
 import { CircularProgressbar, buildStyles } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import AIChatbot from "./AIchatbot";
+import { useRef } from "react";
+import jsPDF from "jspdf";
+import html2canvas from "html2canvas";
 
 function Dashboard() {
   const [image, setImage] = useState(null);
@@ -13,6 +16,7 @@ function Dashboard() {
   const [result, setResult] = useState(null);
   const [loading, setLoading] = useState(false);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const resultRef = useRef();
 
   // Handle Image Upload
   const handleImage = (file) => {
@@ -62,6 +66,24 @@ function Dashboard() {
       setLoading(false);
     }
   };
+  const handleDownloadPDF = async () => {
+  if (!resultRef.current) return;
+
+  const canvas = await html2canvas(resultRef.current);
+  const imgData = canvas.toDataURL("image/png");
+
+  const pdf = new jsPDF("p", "mm", "a4");
+
+  const imgWidth = 210;
+  const pageHeight = 295;
+  const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+  let position = 0;
+
+  pdf.addImage(imgData, "PNG", 0, position, imgWidth, imgHeight);
+
+  pdf.save("Crop_Diagnosis_Result.pdf");
+};
 
   return (
     <>
@@ -203,8 +225,14 @@ function Dashboard() {
 </div>
   ) : (
     /* RESULT SECTION */
-    <div className="ai-result-container">
+    <div className="ai-result-container" ref={resultRef}>
+      <div className="result-actions">
+  <button className="pdf-btn" onClick={handleDownloadPDF}>
+    📄 Download PDF
+  </button>
+</div>
       <h2 className="ai-result-title">🌿 AI Diagnosis Result</h2>
+      
 
       <div className="ai-result-grid">
         {/* Confidence */}

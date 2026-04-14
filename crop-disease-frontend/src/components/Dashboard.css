@@ -391,3 +391,26 @@
     grid-template-columns: 1fr;
   }
 }
+
+
+
+.result-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.pdf-btn {
+  background: #1b4332;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.3s;
+}
+
+.pdf-btn:hover {
+  background: #14532d;
+}

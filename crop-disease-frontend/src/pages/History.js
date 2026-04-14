@@ -20,6 +20,8 @@ function History() {
   const [search, setSearch] = useState("");
   const [selectedPrediction, setSelectedPrediction] = useState(null);
   const [isChatOpen, setIsChatOpen] = useState(false);
+  const [severityFilter, setSeverityFilter] = useState("all");
+  const [sortOrder, setSortOrder] = useState("latest");
   const fetchHistory = async () => {
     const token = localStorage.getItem("token");
 
@@ -62,12 +64,87 @@ function History() {
     fetchHistory();
   }, []);
 
-  const filtered = predictions.filter(
-    (item) =>
+  const filtered = predictions
+  .filter((item) => {
+    const matchesSearch =
       item.crop?.toLowerCase().includes(search.toLowerCase()) ||
-      item.disease?.toLowerCase().includes(search.toLowerCase())
-  );
+      item.disease?.toLowerCase().includes(search.toLowerCase());
 
+    const matchesSeverity =
+      severityFilter === "all" ||
+      item.severity?.toLowerCase() === severityFilter;
+
+    return matchesSearch && matchesSeverity;
+  })
+  .sort((a, b) => {
+    if (sortOrder === "latest") {
+      return new Date(b.created_at) - new Date(a.created_at);
+    } else {
+      return new Date(a.created_at) - new Date(b.created_at);
+    }
+  });
+
+
+  const handleClearAll = async () => {
+  if (!window.confirm("Are you sure you want to delete ALL history?")) {
+    return;
+  }
+
+  const token = localStorage.getItem("token");
+
+  try {
+    await API.delete("/clear-history", {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    setPredictions([]); // clear UI
+    setSelectedPrediction(null);
+  } catch (error) {
+    console.log(error);
+  }
+};
+const handleCopyResult = () => {
+  if (!selectedPrediction) return;
+
+  const text = `
+🌿 AI Diagnosis Result
+
+Crop: ${selectedPrediction.crop}
+Disease: ${selectedPrediction.disease}
+Severity: ${selectedPrediction.severity}
+Confidence: ${selectedPrediction.confidence}%
+
+📋 Treatments:
+${
+  selectedPrediction.treatments?.length > 0
+    ? selectedPrediction.treatments
+        .map(
+          (t, i) =>
+            `${i + 1}. ${t.medicine_name} (Dosage: ${
+              t.dosage || "N/A"
+            })`
+        )
+        .join("\n")
+    : "No treatment available"
+}
+
+🏪 Shops:
+${
+  selectedPrediction.shops?.length > 0
+    ? selectedPrediction.shops
+        .map(
+          (s, i) =>
+            `${i + 1}. ${s.shop_name}, ${s.city}`
+        )
+        .join("\n")
+    : "No shop data available"
+}
+`;
+
+  navigator.clipboard.writeText(text);
+
+  alert("✅ Result copied to clipboard!");
+};
   return (
     <>
        <Navbar onAiHelpClick={() => setIsChatOpen(true)} />
@@ -93,6 +170,7 @@ function History() {
               />
             </div>
           </div>
+          
 
           <div className="history-hero-right">
             <div className="history-hero-card">
@@ -127,11 +205,39 @@ function History() {
         </section>
 
         <section className="history-section">
-          <div className="section-heading">
-            <span>🕒 RECENT RECORDS</span>
-            <h2>Your Scan History</h2>
-            <p>Click on any card to view the complete prediction result.</p>
-          </div>
+       <div className="section-heading">
+  <div className="heading-top">
+    <span>🕒 RECENT RECORDS</span>
+
+    <button className="clear-all-btn" onClick={handleClearAll}>
+      <FaTrashAlt /> Clear All
+    </button>
+  </div>
+  <div className="history-filters">
+  {/* Severity Filter */}
+  <select
+    value={severityFilter}
+    onChange={(e) => setSeverityFilter(e.target.value)}
+  >
+    <option value="all">All Severity</option>
+    <option value="low">Low</option>
+    <option value="medium">Medium</option>
+    <option value="high">High</option>
+  </select>
+
+  {/* Sort Filter */}
+  <select
+    value={sortOrder}
+    onChange={(e) => setSortOrder(e.target.value)}
+  >
+    <option value="latest">Latest First</option>
+    <option value="oldest">Oldest First</option>
+  </select>
+</div>
+
+  <h2>Your Scan History</h2>
+  <p>Click on any card to view the complete prediction result.</p>
+</div>
 
           {filtered.length === 0 ? (
             <div className="empty-state">
@@ -218,6 +324,11 @@ function History() {
             </button>
 
             <h2 className="modal-title">🌿 AI Diagnosis Result</h2>
+            <div className="modal-actions">
+  <button className="copy-btn" onClick={handleCopyResult}>
+    📋 Copy Result
+  </button>
+</div>
 
             <div className="modal-result-grid">
               {/* Confidence */}

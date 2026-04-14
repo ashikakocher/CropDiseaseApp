@@ -303,3 +303,27 @@ def delete_prediction(
     db.commit()
 
     return {"message": "Prediction deleted successfully"}
+
+
+# -------------------------------------------------
+# Clear All History
+# -------------------------------------------------
+
+@router.delete("/clear-history")
+def clear_all_history(
+    current_user=Depends(get_current_user),
+    db: Session = Depends(get_db)
+):
+    predictions = db.query(models.Prediction).filter(
+        models.Prediction.owner_id == current_user.id
+    )
+
+    count = predictions.count()
+
+    if count == 0:
+        return {"message": "No history to delete"}
+
+    predictions.delete(synchronize_session=False)
+    db.commit()
+
+    return {"message": f"{count} predictions deleted successfully"}

@@ -20,7 +20,7 @@ function Navbar({ onAiHelpClick }) {
   const [showProfileMenu, setShowProfileMenu] = useState(false);
 
   const profileRef = useRef(null);
-
+const learnRef = useRef(null);
   const logout = () => {
     localStorage.removeItem("token");
     navigate("/");
@@ -123,31 +123,43 @@ function Navbar({ onAiHelpClick }) {
           History
         </button>
         
-      <div
+     <div
+  ref={learnRef}
   className={`learn-wrapper ${
-    isActive("/disease-library") ||
-    isActive("/video-library") 
+    isActive("/disease-library") || isActive("/video-library")
       ? "active"
       : ""
   }`}
-  onMouseEnter={() => setShowLearn(true)}
-  onMouseLeave={() => setShowLearn(false)}
 >
-  <button className="nav-btn">
+  <button
+    className="nav-btn"
+    onClick={() => setShowLearn(!showLearn)}
+  >
     Learn <span className="dropdown-arrow">▾</span>
   </button>
 
   {showLearn && (
     <div className="dropdown-menu">
-      <p onClick={() => navigate("/disease-library")}>
+      <p
+        onClick={() => {
+          navigate("/disease-library");
+          setShowLearn(false);
+        }}
+      >
         📚 Disease Library
       </p>
-      <p onClick={() => navigate("/video-library")}>
+      <p
+        onClick={() => {
+          navigate("/video-library");
+          setShowLearn(false);
+        }}
+      >
         🎥 Video Library
       </p>
     </div>
   )}
 </div>
+
 
         {/* AI BUTTON */}
         <button className="ai-btn" onClick={onAiHelpClick}>

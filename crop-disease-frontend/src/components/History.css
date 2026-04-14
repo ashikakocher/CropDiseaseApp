@@ -522,3 +522,64 @@
     padding-right: 35px;
   }
 }
+
+
+.heading-top {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.clear-all-btn {
+  background: #e53935;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  transition: 0.3s;
+}
+
+.clear-all-btn:hover {
+  background: #c62828;
+}
+
+
+.modal-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
+.copy-btn {
+  background: #1b4332;
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.3s;
+}
+
+.copy-btn:hover {
+  background: #14532d;
+}
+
+.history-filters {
+  display: flex;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.history-filters select {
+  padding: 8px 10px;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  cursor: pointer;
+  font-size: 13px;
+}

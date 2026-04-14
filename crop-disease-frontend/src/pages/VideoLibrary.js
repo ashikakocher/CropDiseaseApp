@@ -26,7 +26,7 @@ function VideoLibrary() {
         "Effective treatment methods for common fungal infections in crops. Step-by-step guidance for better field management.",
       thumbnail:
         "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1200&q=80",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      videoUrl: "https://www.youtube.com/embed/RQ7h5JPrBzE?si=GzyG-g-MkmdPR992",
     },
     {
       id: 2,
@@ -39,7 +39,7 @@ function VideoLibrary() {
         "Learn how to identify common plant diseases affecting crops. Covers visible symptoms, leaf damage, and fungal spots.",
       thumbnail:
         "https://images.unsplash.com/photo-1466692476868-aef1dfb1e735?auto=format&fit=crop&w=1200&q=80",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      videoUrl: "https://www.youtube.com/embed/o48CYz5FMO0?si=mldVQSvhkTpH3BQC",
     },
     {
       id: 3,
@@ -52,7 +52,7 @@ function VideoLibrary() {
         "A practical introduction to integrated pest management combining cultural, biological, and preventive methods.",
       thumbnail:
         "https://images.unsplash.com/photo-1501004318641-b39e6451bec6?auto=format&fit=crop&w=1200&q=80",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      videoUrl: "https://www.youtube.com/embed/Uo05345F1C8?si=axdYaCFiFjGzWidO",
     },
     {
       id: 4,
@@ -65,7 +65,7 @@ function VideoLibrary() {
         "Sustainable and organic approaches to pest management. Learn natural methods to protect crops safely.",
       thumbnail:
         "https://images.unsplash.com/photo-1465379944081-7f47de8d74ac?auto=format&fit=crop&w=1200&q=80",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      videoUrl: "https://www.youtube.com/embed/GkteUqsxAWw?si=FQ9P0LyjD7h1VZFI",
     },
     {
       id: 5,
@@ -78,7 +78,7 @@ function VideoLibrary() {
         "How proper crop rotation can prevent soil-borne diseases and improve overall farm productivity.",
       thumbnail:
         "https://images.unsplash.com/photo-1500382017468-9049fed747ef?auto=format&fit=crop&w=1200&q=80",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      videoUrl: "https://www.youtube.com/embed/XeNA6XdMoF8?si=-bdkRm4g-DZF2ypQ",
     },
     {
       id: 6,
@@ -91,7 +91,7 @@ function VideoLibrary() {
         "Understanding soil composition, pH levels, and nutrient management for optimal crop growth and disease resistance.",
       thumbnail:
         "https://images.unsplash.com/photo-1500937386664-56d1dfef3854?auto=format&fit=crop&w=1200&q=80",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      videoUrl: "https://www.youtube.com/embed/I0VguIIhQ_g?si=a2lT6W14-kVq185Y",
     },
     {
       id: 7,
@@ -104,7 +104,7 @@ function VideoLibrary() {
         "Using companion plants to naturally reduce disease pressure and improve crop health in gardens and farms.",
       thumbnail:
         "https://images.unsplash.com/photo-1461354464878-ad92f492a5a0?auto=format&fit=crop&w=1200&q=80",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      videoUrl: "https://www.youtube.com/embed/EmsaVi1Kt6k?si=OJzX3IjYUfKvQGy-",
     },
     {
       id: 8,
@@ -117,7 +117,7 @@ function VideoLibrary() {
         "Proper irrigation techniques and water management strategies to prevent disease and improve plant performance.",
       thumbnail:
         "https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1200&q=80",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      videoUrl: "https://www.youtube.com/embed/c_EHEsnBm2o?si=UyVmv-WKQPFgaO7a",
     },
     {
       id: 9,
@@ -130,7 +130,7 @@ function VideoLibrary() {
         "Special considerations for disease prevention and treatment in controlled greenhouse environments.",
       thumbnail:
         "https://images.unsplash.com/photo-1516253593875-bd7ba052fbc5?auto=format&fit=crop&w=1200&q=80",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      videoUrl: "https://www.youtube.com/embed/L-2P1X3-aDY?si=bTMsf6kJGqe8dEt5",
     },
     {
       id: 10,
@@ -143,7 +143,7 @@ function VideoLibrary() {
         "Identifying and treating bacterial infections in plants. Learn the key symptoms and effective field practices.",
       thumbnail:
         "https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&w=1200&q=80",
-      videoUrl: "https://www.youtube.com/embed/dQw4w9WgXcQ",
+      videoUrl: "https://www.youtube.com/embed/uh1VNnw4cAc?si=JYHcI9dzPs_0U4Mm",
     },
   ];
 
