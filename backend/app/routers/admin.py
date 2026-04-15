@@ -121,10 +121,16 @@ def get_admin_analytics(
     }
 @router.get("/users")
 def get_all_users(
+    approved: bool = None,
     current_admin: Admin = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    return db.query(User).order_by(User.created_at.desc()).all()
+    query = db.query(User)
+
+    if approved is not None:
+        query = query.filter(User.status == ("approved" if approved else "pending"))
+
+    return query.order_by(User.created_at.desc()).all()
 
 @router.put("/users/{user_id}")
 def update_user(
@@ -488,7 +494,8 @@ def create_user(
         phone=user_data.phone,
         city=user_data.city,
         area=user_data.area,
-        password_hash=hash_password(user_data.password)
+        password_hash=hash_password(user_data.password),
+        status="approved"
     )
 
     db.add(new_user)
@@ -556,3 +563,50 @@ def update_supplier(
     db.refresh(supplier)
 
     return {"message": "Supplier updated successfully", "supplier": supplier}
+
+
+
+
+
+
+@router.get("/users/pending")
+def get_pending_users(
+    current_admin: Admin = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    return db.query(User).filter(User.status == "pending").all()
+
+
+@router.put("/users/approve/{user_id}")
+def approve_user(
+    user_id: int,
+    current_admin: Admin = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user.status = "approved"
+
+    db.commit()
+
+    return {"message": "User approved successfully"}
+
+
+@router.put("/users/reject/{user_id}")
+def reject_user(
+    user_id: int,
+    current_admin: Admin = Depends(get_current_admin),
+    db: Session = Depends(get_db)
+):
+    user = db.query(User).filter(User.id == user_id).first()
+
+    if not user:
+        raise HTTPException(status_code=404, detail="User not found")
+
+    user.status = "rejected"
+    db.commit()
+
+    return {"message": "User rejected"}

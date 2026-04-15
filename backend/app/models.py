@@ -1,8 +1,9 @@
-from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Text
+from sqlalchemy import Column, Integer, String, Float, DateTime, ForeignKey, Text,Boolean
 from sqlalchemy.orm import relationship
 from datetime import datetime
 from app.database import Base
 from sqlalchemy.sql import func
+
 
 
 
@@ -20,6 +21,7 @@ class User(Base):
 
     predictions = relationship("Prediction", back_populates="owner")
     queries = relationship("Query", back_populates="user")
+    status = Column(String, default="pending")
 
 
 class Prediction(Base):

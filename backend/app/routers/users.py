@@ -4,6 +4,7 @@ from app import models, schemas
 from app.database import SessionLocal
 from app.auth import hash_password, verify_password, create_access_token, get_current_user
 
+
 router = APIRouter(prefix="/users", tags=["Users"])
 
 
@@ -49,6 +50,14 @@ def login(user: schemas.UserLogin, db: Session = Depends(get_db)):
 
     if not db_user or not verify_password(user.password, db_user.password_hash):
         raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    if db_user.status != "approved":
+        raise HTTPException(
+        status_code=403,
+        detail="Your account is not approved yet"
+    )
+    
+    
 
     access_token = create_access_token(
         data={"sub": db_user.email, "role": "user"}

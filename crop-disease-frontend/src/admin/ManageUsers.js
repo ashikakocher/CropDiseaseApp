@@ -110,6 +110,30 @@ function ManageUsers() {
     }
   };
 
+  const amusrHandleApprove = async (id) => {
+  try {
+    await API.put(`/admin/users/approve/${id}`, {}, {
+      headers: amusrGetHeaders(),
+    });
+    amusrFetchUsers();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
+const amusrHandleReject = async (id) => {
+  if (!window.confirm("Reject this user?")) return;
+
+  try {
+    await API.put(`/admin/users/reject/${id}`, {}, {
+      headers: amusrGetHeaders(),
+    });
+    amusrFetchUsers();
+  } catch (err) {
+    console.log(err);
+  }
+};
+
   return (
     <section className="amusr-wrapper" id="amusr-wrapper">
       <div className="amusr-header-card">
@@ -144,6 +168,7 @@ function ManageUsers() {
                 <th>Phone</th>
                 <th>City</th>
                 <th>Area</th>
+                <th>Status</th>
                 <th className="amusr-action-heading">Actions</th>
               </tr>
             </thead>
@@ -160,25 +185,51 @@ function ManageUsers() {
                     <td>{user.city || "-"}</td>
                     <td>{user.area || "-"}</td>
                     <td>
+  <span className={`amusr-status-badge amusr-${user.status}`}>
+    {user.status || "pending"}
+  </span>
+</td>
+                    <td>
                       <div className="amusr-action-group">
-                        <button
-                          className="amusr-icon-btn amusr-edit-btn"
-                          id={`amusr-edit-btn-${user.id}`}
-                          onClick={() => amusrOpenEditModal(user)}
-                          title="Edit User"
-                        >
-                          <FaEdit />
-                        </button>
+  
+  {/* APPROVE BUTTON */}
+  {user.status !== "approved" && (
+    <button
+      className="amusr-icon-btn amusr-approve-btn"
+      onClick={() => amusrHandleApprove(user.id)}
+      title="Approve User"
+    >
+      ✔
+    </button>
+  )}
 
-                        <button
-                          className="amusr-icon-btn amusr-delete-btn"
-                          id={`amusr-delete-btn-${user.id}`}
-                          onClick={() => amusrHandleDelete(user.id)}
-                          title="Delete User"
-                        >
-                          <FaTrash />
-                        </button>
-                      </div>
+  {/* REJECT BUTTON */}
+  {user.status !== "rejected" && (
+    <button
+      className="amusr-icon-btn amusr-reject-btn"
+      onClick={() => amusrHandleReject(user.id)}
+      title="Reject User"
+    >
+      ✖
+    </button>
+  )}
+
+  <button
+    className="amusr-icon-btn amusr-edit-btn"
+    onClick={() => amusrOpenEditModal(user)}
+    title="Edit User"
+  >
+    <FaEdit />
+  </button>
+
+  <button
+    className="amusr-icon-btn amusr-delete-btn"
+    onClick={() => amusrHandleDelete(user.id)}
+    title="Delete User"
+  >
+    <FaTrash />
+  </button>
+</div>
                     </td>
                   </tr>
                 ))
