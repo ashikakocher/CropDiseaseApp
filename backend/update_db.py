@@ -16,9 +16,9 @@ def add_column_if_not_exists(connection, table_name, column_def):
 
 def main():
     with engine.connect() as connection:
-        add_column_if_not_exists(connection, "suppliers", "kyc_document VARCHAR")
-        add_column_if_not_exists(connection, "suppliers", "kyc_type VARCHAR")
-        add_column_if_not_exists(connection, "suppliers", "kyc_status VARCHAR DEFAULT 'pending'")
+        add_column_if_not_exists(connection, "users", "kyc_document VARCHAR")
+        add_column_if_not_exists(connection, "users", "kyc_type VARCHAR")
+        add_column_if_not_exists(connection, "users", "status VARCHAR DEFAULT 'pending'")
         connection.commit()
         print("Database updated successfully.")
 

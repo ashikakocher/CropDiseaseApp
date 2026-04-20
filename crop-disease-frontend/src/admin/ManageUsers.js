@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../services/api";
-import { FaTrash, FaEdit, FaPlus, FaUserShield } from "react-icons/fa";
+import { FaTrash, FaEdit, FaPlus, FaUserShield, FaEye } from "react-icons/fa";
 import "./Admin.css";
 
 function ManageUsers() {
@@ -15,6 +15,8 @@ function ManageUsers() {
     city: "",
     area: "",
     password: "",
+    kyc_type: "",
+    status: "pending",
   });
 
   useEffect(() => {
@@ -45,6 +47,8 @@ function ManageUsers() {
       city: "",
       area: "",
       password: "",
+      kyc_type: "",
+      status: "pending",
     });
     setAmusrShowModal(true);
   };
@@ -58,6 +62,8 @@ function ManageUsers() {
       city: user.city || "",
       area: user.area || "",
       password: "",
+      kyc_type: user.kyc_type || "",
+      status: user.status || "pending",
     });
     setAmusrShowModal(true);
   };
@@ -72,6 +78,8 @@ function ManageUsers() {
       city: "",
       area: "",
       password: "",
+      kyc_type: "",
+      status: "pending",
     });
   };
 
@@ -85,6 +93,7 @@ function ManageUsers() {
       amusrFetchUsers();
     } catch (err) {
       console.log(err);
+      alert(err.response?.data?.detail || "Delete failed");
     }
   };
 
@@ -111,28 +120,42 @@ function ManageUsers() {
   };
 
   const amusrHandleApprove = async (id) => {
-  try {
-    await API.put(`/admin/users/approve/${id}`, {}, {
-      headers: amusrGetHeaders(),
-    });
-    amusrFetchUsers();
-  } catch (err) {
-    console.log(err);
-  }
-};
+    try {
+      await API.put(
+        `/admin/users/approve/${id}`,
+        {},
+        {
+          headers: amusrGetHeaders(),
+        }
+      );
+      amusrFetchUsers();
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
-const amusrHandleReject = async (id) => {
-  if (!window.confirm("Reject this user?")) return;
+  const amusrHandleReject = async (id) => {
+    if (!window.confirm("Reject this user?")) return;
 
-  try {
-    await API.put(`/admin/users/reject/${id}`, {}, {
-      headers: amusrGetHeaders(),
-    });
-    amusrFetchUsers();
-  } catch (err) {
-    console.log(err);
-  }
-};
+    try {
+      await API.put(
+        `/admin/users/reject/${id}`,
+        {},
+        {
+          headers: amusrGetHeaders(),
+        }
+      );
+      amusrFetchUsers();
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  const amusrGetStatusClass = (status) => {
+    if (status === "approved") return "amusr-status-badge amusr-approved";
+    if (status === "rejected") return "amusr-status-badge amusr-rejected";
+    return "amusr-status-badge amusr-pending";
+  };
 
   return (
     <section className="amusr-wrapper" id="amusr-wrapper">
@@ -143,7 +166,6 @@ const amusrHandleReject = async (id) => {
           </div>
           <div>
             <h2 className="amusr-main-title">Manage Users</h2>
-            
           </div>
         </div>
 
@@ -156,7 +178,6 @@ const amusrHandleReject = async (id) => {
           <span>Add User</span>
         </button>
       </div>
-      
 
       <div className="amusr-table-card">
         <div className="amusr-table-responsive">
@@ -168,6 +189,8 @@ const amusrHandleReject = async (id) => {
                 <th>Phone</th>
                 <th>City</th>
                 <th>Area</th>
+                <th>KYC Type</th>
+                <th>KYC Document</th>
                 <th>Status</th>
                 <th className="amusr-action-heading">Actions</th>
               </tr>
@@ -184,61 +207,71 @@ const amusrHandleReject = async (id) => {
                     <td>{user.phone || "-"}</td>
                     <td>{user.city || "-"}</td>
                     <td>{user.area || "-"}</td>
+                    <td>{user.kyc_type || "-"}</td>
                     <td>
-  <span className={`amusr-status-badge amusr-${user.status}`}>
-    {user.status || "pending"}
-  </span>
-</td>
+                      {user.kyc_document ? (
+                        <a
+                          href={`http://127.0.0.1:8000${user.kyc_document}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="amusr-view-doc-btn"
+                        >
+                          <FaEye /> View
+                        </a>
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+                    <td>
+                      <span className={amusrGetStatusClass(user.status)}>
+                        {user.status || "pending"}
+                      </span>
+                    </td>
                     <td>
                       <div className="amusr-action-group">
-  
-  {/* APPROVE BUTTON */}
-  {user.status !== "approved" && (
-    <button
-      className="amusr-icon-btn amusr-approve-btn"
-      onClick={() => amusrHandleApprove(user.id)}
-      title="Approve User"
-    >
-      ✔
-    </button>
-  )}
+                        {user.status !== "approved" && (
+                          <button
+                            className="amusr-icon-btn amusr-approve-btn"
+                            onClick={() => amusrHandleApprove(user.id)}
+                            title="Approve User"
+                          >
+                            ✔
+                          </button>
+                        )}
 
-  {/* REJECT BUTTON */}
-  {user.status !== "rejected" && (
-    <button
-      className="amusr-icon-btn amusr-reject-btn"
-      onClick={() => amusrHandleReject(user.id)}
-      title="Reject User"
-    >
-      ✖
-    </button>
-  )}
+                        {user.status !== "rejected" && (
+                          <button
+                            className="amusr-icon-btn amusr-reject-btn"
+                            onClick={() => amusrHandleReject(user.id)}
+                            title="Reject User"
+                          >
+                            ✖
+                          </button>
+                        )}
 
-  <button
-    className="amusr-icon-btn amusr-edit-btn"
-    onClick={() => amusrOpenEditModal(user)}
-    title="Edit User"
-  >
-    <FaEdit />
-  </button>
+                        <button
+                          className="amusr-icon-btn amusr-edit-btn"
+                          onClick={() => amusrOpenEditModal(user)}
+                          title="Edit User"
+                        >
+                          <FaEdit />
+                        </button>
 
-  <button
-    className="amusr-icon-btn amusr-delete-btn"
-    onClick={() => amusrHandleDelete(user.id)}
-    title="Delete User"
-  >
-    <FaTrash />
-  </button>
-</div>
+                        <button
+                          className="amusr-icon-btn amusr-delete-btn"
+                          onClick={() => amusrHandleDelete(user.id)}
+                          title="Delete User"
+                        >
+                          <FaTrash />
+                        </button>
+                      </div>
                     </td>
                   </tr>
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6">
-                    <div className="amusr-empty-state">
-                      No users found.
-                    </div>
+                  <td colSpan="9">
+                    <div className="amusr-empty-state">No users found.</div>
                   </td>
                 </tr>
               )}
@@ -354,6 +387,44 @@ const amusrHandleReject = async (id) => {
                       })
                     }
                   />
+                </div>
+
+                <div className="amusr-form-field">
+                  <label htmlFor="amusr-kyc-type">KYC Type</label>
+                  <select
+                    id="amusr-kyc-type"
+                    value={amusrFormData.kyc_type}
+                    onChange={(e) =>
+                      setAmusrFormData({
+                        ...amusrFormData,
+                        kyc_type: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="">Select KYC Type</option>
+                    <option value="aadhaar">Aadhaar Card</option>
+                    <option value="pan">PAN Card</option>
+                    <option value="voter">Voter ID</option>
+                    <option value="driving_license">Driving License</option>
+                  </select>
+                </div>
+
+                <div className="amusr-form-field">
+                  <label htmlFor="amusr-status">Status</label>
+                  <select
+                    id="amusr-status"
+                    value={amusrFormData.status}
+                    onChange={(e) =>
+                      setAmusrFormData({
+                        ...amusrFormData,
+                        status: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="approved">Approved</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
                 </div>
 
                 {!amusrEditingUserId && (

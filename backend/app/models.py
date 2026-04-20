@@ -19,6 +19,9 @@ class User(Base):
     password_hash = Column(String)
     created_at = Column(DateTime, default=datetime.utcnow)
 
+    kyc_document = Column(String, nullable=True)
+    kyc_type = Column(String, nullable=True)
+
     predictions = relationship("Prediction", back_populates="owner")
     queries = relationship("Query", back_populates="user")
     status = Column(String, default="pending")

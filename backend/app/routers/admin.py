@@ -130,7 +130,24 @@ def get_all_users(
     if approved is not None:
         query = query.filter(User.status == ("approved" if approved else "pending"))
 
-    return query.order_by(User.created_at.desc()).all()
+    users = query.order_by(User.created_at.desc()).all()
+
+    return [
+        {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "phone": user.phone,
+            "city": user.city,
+            "area": user.area,
+            "kyc_type": user.kyc_type,
+            "kyc_document": user.kyc_document,
+            "status": user.status,
+            "created_at": user.created_at,
+        }
+        for user in users
+    ]
+
 
 @router.put("/users/{user_id}")
 def update_user(
@@ -144,8 +161,11 @@ def update_user(
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # prevent duplicate email
-    existing_user = db.query(User).filter(User.email == user_data.email, User.id != user_id).first()
+    existing_user = (
+        db.query(User)
+        .filter(User.email == user_data.email, User.id != user_id)
+        .first()
+    )
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already in use by another user")
 
@@ -154,11 +174,27 @@ def update_user(
     user.phone = user_data.phone
     user.city = user_data.city
     user.area = user_data.area
+    user.kyc_type = user_data.kyc_type
+    user.status = user_data.status
 
     db.commit()
     db.refresh(user)
 
-    return {"message": "User updated successfully", "user": user}
+    return {
+        "message": "User updated successfully",
+        "user": {
+            "id": user.id,
+            "name": user.name,
+            "email": user.email,
+            "phone": user.phone,
+            "city": user.city,
+            "area": user.area,
+            "kyc_type": user.kyc_type,
+            "kyc_document": user.kyc_document,
+            "status": user.status,
+            "created_at": user.created_at,
+        }
+    }
 
 @router.get("/suppliers")
 def get_all_suppliers(
@@ -297,6 +333,7 @@ def delete_user(
     db.commit()
     return {"message": "User deleted successfully"}
 
+
 @router.delete("/suppliers/{supplier_id}")
 def delete_supplier(
     supplier_id: int,
@@ -310,6 +347,7 @@ def delete_supplier(
     db.delete(supplier)
     db.commit()
     return {"message": "Supplier deleted successfully"}
+
 @router.delete("/shops/{shop_id}")
 def delete_shop(
     shop_id: int,
@@ -481,7 +519,6 @@ def create_user(
     current_admin: Admin = Depends(get_current_admin),
     db: Session = Depends(get_db)
 ):
-    # check if email exists
     existing_user = db.query(User).filter(User.email == user_data.email).first()
     if existing_user:
         raise HTTPException(status_code=400, detail="Email already registered")
@@ -493,15 +530,29 @@ def create_user(
         city=user_data.city,
         area=user_data.area,
         password_hash=hash_password(user_data.password),
-        status="approved"
+        kyc_type=user_data.kyc_type,
+        status=user_data.status or "approved"
     )
 
     db.add(new_user)
     db.commit()
     db.refresh(new_user)
 
-    return {"message": "User created successfully", "user": new_user}
-
+    return {
+        "message": "User created successfully",
+        "user": {
+            "id": new_user.id,
+            "name": new_user.name,
+            "email": new_user.email,
+            "phone": new_user.phone,
+            "city": new_user.city,
+            "area": new_user.area,
+            "kyc_type": new_user.kyc_type,
+            "kyc_document": new_user.kyc_document,
+            "status": new_user.status,
+            "created_at": new_user.created_at,
+        }
+    }
 @router.post("/suppliers")
 def create_supplier(
     supplier_data: AdminSupplierCreate,
@@ -605,16 +656,14 @@ def approve_user(
     db: Session = Depends(get_db)
 ):
     user = db.query(User).filter(User.id == user_id).first()
-
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
     user.status = "approved"
-
     db.commit()
+    db.refresh(user)
 
     return {"message": "User approved successfully"}
-
 
 @router.put("/users/reject/{user_id}")
 def reject_user(
@@ -623,11 +672,11 @@ def reject_user(
     db: Session = Depends(get_db)
 ):
     user = db.query(User).filter(User.id == user_id).first()
-
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
 
     user.status = "rejected"
     db.commit()
+    db.refresh(user)
 
-    return {"message": "User rejected"}
+    return {"message": "User rejected successfully"}

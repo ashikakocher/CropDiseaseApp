@@ -46,15 +46,13 @@ app.include_router(diseases.router)
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_BACKEND_DIR = os.path.dirname(BASE_DIR)
 
-# Main uploads folder
 UPLOADS_DIR = os.path.join(PROJECT_BACKEND_DIR, "uploads")
-
-# KYC folder inside uploads
 KYC_DIR = os.path.join(UPLOADS_DIR, "kyc")
+USER_KYC_DIR = os.path.join(UPLOADS_DIR, "user_kyc")
 
-# Create folders if not exist
 os.makedirs(UPLOADS_DIR, exist_ok=True)
 os.makedirs(KYC_DIR, exist_ok=True)
+os.makedirs(USER_KYC_DIR, exist_ok=True)
 
 # Static file mount
 app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")

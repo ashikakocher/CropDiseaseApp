@@ -413,3 +413,12 @@
   font-size: 15px;
   color: #333;
 }
+
+.login-select {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 15px;
+  color: #333;
+}

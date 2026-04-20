@@ -24,9 +24,12 @@ class UserResponse(BaseModel):
     id: int
     name: str
     email: EmailStr
-    phone: Optional[str]
-    city: Optional[str]
-    area: Optional[str]
+    phone: str | None = None
+    city: str | None = None
+    area: str | None = None
+    kyc_document: str | None = None
+    kyc_type: str | None = None
+    status: str | None = None
 
     class Config:
         from_attributes = True
@@ -270,13 +273,14 @@ class DashboardStats(BaseModel):
 
 
 
-
 class AdminUserUpdate(BaseModel):
     name: str
-    email: str
-    phone: Optional[str] = None
-    city: Optional[str] = None
-    area: Optional[str] = None
+    email: EmailStr
+    phone: str | None = None
+    city: str | None = None
+    area: str | None = None
+    kyc_type: str | None = None
+    status: str | None = "pending"
 
 
 class AdminShopUpdate(BaseModel):
@@ -329,11 +333,13 @@ class AdminSupplierUpdate(BaseModel):
 
 class AdminUserCreate(BaseModel):
     name: str
-    email: str
-    phone: Optional[str] = None
-    city: Optional[str] = None
-    area: Optional[str] = None
+    email: EmailStr
+    phone: str | None = None
+    city: str | None = None
+    area: str | None = None
     password: str
+    kyc_type: str | None = None
+    status: str | None = "approved"
 
 class AdminSupplierCreate(BaseModel):
     name: str
