@@ -297,7 +297,6 @@ def delete_user(
     db.commit()
     return {"message": "User deleted successfully"}
 
-
 @router.delete("/suppliers/{supplier_id}")
 def delete_supplier(
     supplier_id: int,
@@ -311,7 +310,6 @@ def delete_supplier(
     db.delete(supplier)
     db.commit()
     return {"message": "Supplier deleted successfully"}
-
 @router.delete("/shops/{shop_id}")
 def delete_shop(
     shop_id: int,
@@ -504,7 +502,6 @@ def create_user(
 
     return {"message": "User created successfully", "user": new_user}
 
-
 @router.post("/suppliers")
 def create_supplier(
     supplier_data: AdminSupplierCreate,
@@ -521,17 +518,29 @@ def create_supplier(
         phone=supplier_data.phone,
         city=supplier_data.city,
         area=supplier_data.area,
-        password_hash=hash_password(supplier_data.password)
+        password_hash=hash_password(supplier_data.password),
+        kyc_type=supplier_data.kyc_type,
+        kyc_status=supplier_data.kyc_status or "pending"
     )
 
     db.add(new_supplier)
     db.commit()
     db.refresh(new_supplier)
 
-    return {"message": "Supplier created successfully", "supplier": new_supplier}
-
-
-
+    return {
+        "message": "Supplier created successfully",
+        "supplier": {
+            "id": new_supplier.id,
+            "name": new_supplier.name,
+            "email": new_supplier.email,
+            "phone": new_supplier.phone,
+            "city": new_supplier.city,
+            "area": new_supplier.area,
+            "kyc_type": new_supplier.kyc_type,
+            "kyc_document": new_supplier.kyc_document,
+            "kyc_status": new_supplier.kyc_status,
+        }
+    }
 
 @router.put("/suppliers/{supplier_id}")
 def update_supplier(
@@ -558,14 +567,26 @@ def update_supplier(
     supplier.phone = supplier_data.phone
     supplier.city = supplier_data.city
     supplier.area = supplier_data.area
+    supplier.kyc_type = supplier_data.kyc_type
+    supplier.kyc_status = supplier_data.kyc_status
 
     db.commit()
     db.refresh(supplier)
 
-    return {"message": "Supplier updated successfully", "supplier": supplier}
-
-
-
+    return {
+        "message": "Supplier updated successfully",
+        "supplier": {
+            "id": supplier.id,
+            "name": supplier.name,
+            "email": supplier.email,
+            "phone": supplier.phone,
+            "city": supplier.city,
+            "area": supplier.area,
+            "kyc_type": supplier.kyc_type,
+            "kyc_document": supplier.kyc_document,
+            "kyc_status": supplier.kyc_status,
+        }
+    }
 
 
 

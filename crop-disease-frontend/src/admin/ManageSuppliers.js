@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import API from "../services/api";
-import { FaTrash, FaEdit, FaPlus, FaTruck } from "react-icons/fa";
+import { FaTrash, FaEdit, FaPlus, FaTruck, FaEye } from "react-icons/fa";
 import "./Admin.css";
 
 function ManageSuppliers() {
@@ -15,6 +15,8 @@ function ManageSuppliers() {
     city: "",
     area: "",
     password: "",
+    kyc_type: "",
+    kyc_status: "pending",
   });
 
   useEffect(() => {
@@ -45,6 +47,8 @@ function ManageSuppliers() {
       city: "",
       area: "",
       password: "",
+      kyc_type: "",
+      kyc_status: "pending",
     });
     setAmsupShowModal(true);
   };
@@ -58,6 +62,8 @@ function ManageSuppliers() {
       city: supplier.city || "",
       area: supplier.area || "",
       password: "",
+      kyc_type: supplier.kyc_type || "",
+      kyc_status: supplier.kyc_status || "pending",
     });
     setAmsupShowModal(true);
   };
@@ -72,6 +78,8 @@ function ManageSuppliers() {
       city: "",
       area: "",
       password: "",
+      kyc_type: "",
+      kyc_status: "pending",
     });
   };
 
@@ -111,6 +119,12 @@ function ManageSuppliers() {
     }
   };
 
+  const amsupGetStatusClass = (status) => {
+    if (status === "verified") return "amsup-status amsup-status-verified";
+    if (status === "rejected") return "amsup-status amsup-status-rejected";
+    return "amsup-status amsup-status-pending";
+  };
+
   return (
     <section className="amsup-wrapper" id="amsup-wrapper">
       <div className="amsup-header-card">
@@ -143,6 +157,9 @@ function ManageSuppliers() {
                 <th>Phone</th>
                 <th>City</th>
                 <th>Area</th>
+                <th>KYC Type</th>
+                <th>KYC Document</th>
+                <th>KYC Status</th>
                 <th className="amsup-action-heading">Actions</th>
               </tr>
             </thead>
@@ -160,6 +177,26 @@ function ManageSuppliers() {
                     <td>{supplier.phone || "-"}</td>
                     <td>{supplier.city || "-"}</td>
                     <td>{supplier.area || "-"}</td>
+                    <td>{supplier.kyc_type || "-"}</td>
+                    <td>
+                      {supplier.kyc_document ? (
+                        <a
+                          href={`http://127.0.0.1:8000${supplier.kyc_document}`}
+                          target="_blank"
+                          rel="noreferrer"
+                          className="amsup-view-doc-btn"
+                        >
+                          <FaEye /> View
+                        </a>
+                      ) : (
+                        "-"
+                      )}
+                    </td>
+                    <td>
+                      <span className={amsupGetStatusClass(supplier.kyc_status)}>
+                        {supplier.kyc_status || "pending"}
+                      </span>
+                    </td>
                     <td>
                       <div className="amsup-action-group">
                         <button
@@ -185,7 +222,7 @@ function ManageSuppliers() {
                 ))
               ) : (
                 <tr>
-                  <td colSpan="6">
+                  <td colSpan="9">
                     <div className="amsup-empty-state">No suppliers found.</div>
                   </td>
                 </tr>
@@ -303,6 +340,44 @@ function ManageSuppliers() {
                       })
                     }
                   />
+                </div>
+
+                <div className="amsup-form-field">
+                  <label htmlFor="amsup-kyc-type">KYC Type</label>
+                  <select
+                    id="amsup-kyc-type"
+                    value={amsupFormData.kyc_type}
+                    onChange={(e) =>
+                      setAmsupFormData({
+                        ...amsupFormData,
+                        kyc_type: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="">Select KYC Type</option>
+                    <option value="aadhaar">Aadhaar Card</option>
+                    <option value="pan">PAN Card</option>
+                    <option value="gst">GST Certificate</option>
+                    <option value="license">Business License</option>
+                  </select>
+                </div>
+
+                <div className="amsup-form-field">
+                  <label htmlFor="amsup-kyc-status">KYC Status</label>
+                  <select
+                    id="amsup-kyc-status"
+                    value={amsupFormData.kyc_status}
+                    onChange={(e) =>
+                      setAmsupFormData({
+                        ...amsupFormData,
+                        kyc_status: e.target.value,
+                      })
+                    }
+                  >
+                    <option value="pending">Pending</option>
+                    <option value="verified">Verified</option>
+                    <option value="rejected">Rejected</option>
+                  </select>
                 </div>
 
                 {!amsupEditingSupplierId && (

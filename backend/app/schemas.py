@@ -168,9 +168,13 @@ class SupplierResponse(BaseModel):
     id: int
     name: str
     email: EmailStr
-    phone: Optional[str]
+    phone: Optional[str] = None
     city: str
-    area: Optional[str]
+    area: Optional[str] = None
+    kyc_document: Optional[str] = None
+    kyc_type: Optional[str] = None
+    kyc_status: Optional[str] = None
+    
 
     class Config:
         from_attributes = True
@@ -333,18 +337,22 @@ class AdminUserCreate(BaseModel):
 
 class AdminSupplierCreate(BaseModel):
     name: str
-    email: str
-    phone: Optional[str] = None
+    email: EmailStr
+    phone: str | None = None
     city: str
-    area: Optional[str] = None
+    area: str | None = None
     password: str
+    kyc_type: str | None = None
+    kyc_status: str | None = "pending"
 
 class AdminSupplierUpdate(BaseModel):
     name: str
-    email: str
-    phone: Optional[str] = None
+    email: EmailStr
+    phone: str | None = None
     city: str
-    area: Optional[str] = None
+    area: str | None = None
+    kyc_type: str | None = None
+    kyc_status: str | None = "pending"
 
 class AdminShopCreate(BaseModel):
     supplier_id: int

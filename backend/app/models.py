@@ -98,6 +98,9 @@ class Supplier(Base):
     area = Column(String, nullable=True)
     password_hash = Column(String, nullable=False)
     created_at = Column(DateTime, default=datetime.utcnow)
+    kyc_document = Column(String, nullable=True)   # file path
+    kyc_type = Column(String, nullable=True)       # aadhaar, pan, gst, etc.
+    kyc_status = Column(String, default="pending") # pending / verified / rejected
 
     shops = relationship("Shop", back_populates="supplier")
 

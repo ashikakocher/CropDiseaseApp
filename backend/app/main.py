@@ -5,7 +5,17 @@ from fastapi.staticfiles import StaticFiles
 
 from app.database import engine
 from app import models
-from app.routers import prediction, users, treatment, shops, suppliers, supplier_medicines, admin ,chatbot ,diseases
+from app.routers import (
+    prediction,
+    users,
+    treatment,
+    shops,
+    suppliers,
+    supplier_medicines,
+    admin,
+    chatbot,
+    diseases,
+)
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -15,7 +25,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=[
         "http://localhost:3000",
-        "http://127.0.0.1:3000"
+        "http://127.0.0.1:3000",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -32,10 +42,19 @@ app.include_router(admin.router)
 app.include_router(chatbot.router)
 app.include_router(diseases.router)
 
+# Base paths
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 PROJECT_BACKEND_DIR = os.path.dirname(BASE_DIR)
+
+# Main uploads folder
 UPLOADS_DIR = os.path.join(PROJECT_BACKEND_DIR, "uploads")
 
-os.makedirs(UPLOADS_DIR, exist_ok=True)
+# KYC folder inside uploads
+KYC_DIR = os.path.join(UPLOADS_DIR, "kyc")
 
+# Create folders if not exist
+os.makedirs(UPLOADS_DIR, exist_ok=True)
+os.makedirs(KYC_DIR, exist_ok=True)
+
+# Static file mount
 app.mount("/uploads", StaticFiles(directory=UPLOADS_DIR), name="uploads")

@@ -2880,3 +2880,36 @@
     justify-content: center;
   }
 }
+
+
+.amsup-status {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: capitalize;
+}
+
+.amsup-status-pending {
+  background: #fff7e6;
+  color: #b26a00;
+}
+
+.amsup-status-verified {
+  background: #e8f9ee;
+  color: #15803d;
+}
+
+.amsup-status-rejected {
+  background: #fdecec;
+  color: #dc2626;
+}
+
+.amsup-view-doc-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  font-weight: 600;
+  color: #2563eb;
+}
