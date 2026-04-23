@@ -285,38 +285,53 @@ function Dashboard() {
           )}
         </div>
 
-        {/* Shops */}
-        <div className="ai-card shops-card">
-          <h3>Available Shops in Your Area</h3>
+{/* Shops */}
+<div className="ai-card shops-card">
+  <h3>Available Shops in Your Area</h3>
 
-          {result.shops?.length > 0 ? (
-            result.shops.map((shop, index) => (
-              <div key={index} className="shop-item">
-                <p><b>{shop.shop_name}</b></p>
-                <p>{shop.address}</p>
-                <p>
-                  {shop.city}
-                  {shop.area ? `, ${shop.area}` : ""}
-                </p>
+  {result.shops?.length > 0 ? (
+    result.shops.map((shop, index) => (
+      <div key={index} className="shop-item">
+        <p><b>{shop.shop_name}</b></p>
+        <p>{shop.address}</p>
+        <p>
+          {shop.city}
+          {shop.area ? `, ${shop.area}` : ""}
+        </p>
 
-                <div className="shop-medicines">
-                  <p><b>Available Medicines:</b></p>
+        {/* ✅ MAP BUTTON */}
+        <button
+          className="map-btn"
+          onClick={() => {
+            const location = `${shop.shop_name}, ${shop.address}, ${shop.city}`;
+            window.open(
+              `https://www.google.com/maps/search/${encodeURIComponent(location)}`,
+              "_blank"
+            );
+          }}
+        >
+          📍 View on Map
+        </button>
 
-                  {shop.medicines.map((med, i) => (
-                    <div key={i} className="shop-medicine-row">
-                      <p>{med.medicine_name}</p>
-                      <p>₹{med.price ?? "N/A"}</p>
-                    </div>
-                  ))}
-                </div>
+        {/* MEDICINES */}
+        <div className="shop-medicines">
+          <p><b>Available Medicines:</b></p>
 
-                {index !== result.shops.length - 1 && <hr />}
-              </div>
-            ))
-          ) : (
-            <p>No matching shops found.</p>
-          )}
+          {shop.medicines.map((med, i) => (
+            <div key={i} className="shop-medicine-row">
+              <p>{med.medicine_name}</p>
+              <p>₹{med.price ?? "N/A"}</p>
+            </div>
+          ))}
         </div>
+
+        {index !== result.shops.length - 1 && <hr />}
+      </div>
+    ))
+  ) : (
+    <p>No matching shops found.</p>
+  )}
+</div>
       </div>
     </div>
   )}

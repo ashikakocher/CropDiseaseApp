@@ -73,29 +73,70 @@ const learnRef = useRef(null);
             </div>
 
             {showProfileMenu && (
-              <div className="profile-dropdown-menu">
-                <div
-                  className="profile-dropdown-item"
-                  onClick={() => {
-                    navigate("/profile");
-                    setShowProfileMenu(false);
-                  }}
-                >
-                  <FaUser className="profile-dropdown-icon" />
-                  <span>Profile</span>
-                </div>
+  <div className="profile-dropdown-menu">
+    
+    <div
+      className="profile-dropdown-item"
+      onClick={() => {
+        navigate("/profile");
+        setShowProfileMenu(false);
+      }}
+    >
+      <FaUser className="profile-dropdown-icon" />
+      <span>Profile</span>
+    </div>
 
-                <div className="profile-menu-divider"></div>
+    <div className="profile-menu-divider"></div>
+    {/* Analytics */}
+<div
+  className="profile-dropdown-item"
+  onClick={() => {
+    navigate("/analytics");
+    setShowProfileMenu(false);
+  }}
+>
+  <span className="profile-dropdown-icon">📊</span>
+  <span>Analytics</span>
+</div>
 
-                <div
-                  className="profile-dropdown-item logout-item"
-                  onClick={logout}
-                >
-                  <FaSignOutAlt className="profile-dropdown-icon logout-icon" />
-                  <span>Logout</span>
-                </div>
-              </div>
-            )}
+    {/* FAQ / Help */}
+    <div
+      className="profile-dropdown-item"
+      onClick={() => {
+        navigate("/faq");
+        setShowProfileMenu(false);
+      }}
+    >
+      <span className="profile-dropdown-icon">❓</span>
+      <span>FAQ / Help</span>
+    </div>
+
+
+    {/* About Us */}
+    <div
+      className="profile-dropdown-item"
+      onClick={() => {
+        navigate("/about");
+        setShowProfileMenu(false);
+      }}
+    >
+      <span className="profile-dropdown-icon">ℹ️</span>
+      <span>About Us</span>
+    </div>
+
+    <div className="profile-menu-divider"></div>
+
+    {/* Logout */}
+    <div
+      className="profile-dropdown-item logout-item"
+      onClick={logout}
+    >
+      <FaSignOutAlt className="profile-dropdown-icon logout-icon" />
+      <span>Logout</span>
+    </div>
+
+  </div>
+)}
           </div>
         </div>
       </header>

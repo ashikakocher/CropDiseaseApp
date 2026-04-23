@@ -25,6 +25,10 @@ import ManageSuppliers from "./admin/ManageSuppliers";
 import ManagePredictions from "./admin/ManagePredictions";
 import SupplierProfile from "./pages/SupplierProfile";
 import VideoLibrary from "./pages/VideoLibrary";
+import About from "./pages/About";
+import Faq from "./pages/Faq";
+import Analytics from "./pages/Analytics";
+
 function App() {
   const [supplierToken, setSupplierToken] = useState(null);
 
@@ -62,6 +66,18 @@ function App() {
         <Route
           path="/history"
           element={token ? <History /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/about"
+          element={token ? <About /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/faq"
+          element={token ? <Faq /> : <Navigate to="/login" />}
+        />
+         <Route
+          path="/analytics"
+          element={token ? <Analytics /> : <Navigate to="/login" />}
         />
          <Route
           path="/disease-library"

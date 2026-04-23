@@ -414,3 +414,24 @@
 .pdf-btn:hover {
   background: #14532d;
 }
+
+
+
+
+
+
+.map-btn {
+  margin: 10px 0;
+  padding: 8px 12px;
+  border: none;
+  background: #2e7d32;
+  color: white;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.map-btn:hover {
+  background: #1b5e20;
+}
