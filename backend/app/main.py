@@ -13,7 +13,6 @@ from app.routers import (
     suppliers,
     supplier_medicines,
     admin,
-    chatbot,
     diseases,
 )
 
@@ -39,7 +38,6 @@ app.include_router(shops.router)
 app.include_router(suppliers.router)
 app.include_router(supplier_medicines.router)
 app.include_router(admin.router)
-app.include_router(chatbot.router)
 app.include_router(diseases.router)
 
 # Base paths
